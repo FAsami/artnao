@@ -1,6 +1,10 @@
 {
     "cSpell.words": [
         "autoincrement",
-        "datasource"
-    ]
+        "datasource",
+        "tailwindcss"
+    ],
+    "files.associations": {
+        "*.css": "tailwindcss"
+    }
 }
