@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Nunito_Sans } from 'next/font/google'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
+const font = Nunito_Sans({ subsets: ['latin'] })
 import '../globals.css'
-const inter = Inter({ subsets: ['latin'] })
+import 'animate.css'
+import { ConfigProvider } from 'antd'
+import { theme } from '../theme/antd'
 
 export const metadata: Metadata = {
   title: 'Artnao',
@@ -15,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={font.className}>
+        <AntdRegistry>
+          <ConfigProvider theme={theme}>{children}</ConfigProvider>
+        </AntdRegistry>
+      </body>
     </html>
   )
 }
