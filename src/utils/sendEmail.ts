@@ -1,37 +1,41 @@
-import { SendMailClient } from 'zeptomail'
-
-const url = process.env.ZEPTO_EMAIL_URL
-const token = process.env.ZEPTO_TOKEN
-
-if (!url) {
-  throw new Error('ZEPTO_EMAIL_URL is not defined in environment variables')
-}
-
-if (!token) {
-  throw new Error('ZEPTO_TOKEN is not defined in environment variables')
-}
-
-const client = new SendMailClient({ url, token })
+import nodemailer from 'nodemailer'
 
 interface EmailOptions {
   from: {
-    address: string
+    email: string
     name: string
   }
-  to: Array<{
-    email_address: {
-      address: string
-      name: string
-    }
-  }>
+  to: {
+    email: string
+    name: string
+  }
+
   subject: string
   htmlbody: string
 }
 
-export const sendEmail = async (options: EmailOptions) => {
-  try {
-    await client.sendMail(options)
-  } catch (error) {
-    console.error(error)
+const sendEmail = async ({ to, from, subject, htmlbody }: EmailOptions) => {
+  const transport = nodemailer.createTransport({
+    host: 'smtp.zeptomail.com',
+    port: 587,
+    auth: {
+      user: 'emailapikey',
+      pass: process.env.EMAIL_PASSWORD
+    }
+  })
+
+  const mailOptions = {
+    from: '"noreply" <noreply@foysal.dev>',
+    to: to.email,
+    subject: subject,
+    html: htmlbody
   }
+
+  transport.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error)
+      throw new Error('Failed to send email')
+    }
+  })
 }
+export { sendEmail }
