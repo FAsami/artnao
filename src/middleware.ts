@@ -5,10 +5,11 @@ export default auth((req) => {
   if (req.nextUrl.pathname.startsWith('/api/auth')) {
     return
   }
+
   if (req.auth) {
     if (
       authRoutes.includes(req.nextUrl.pathname) &&
-      !req.auth.user.emailVerifiedOn
+      !req.auth.user.emailVerified
     ) {
       return Response.redirect(new URL('/auth/verify-email', req.nextUrl))
     }

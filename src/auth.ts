@@ -1,6 +1,6 @@
-import NextAuth from 'next-auth'
+import NextAuth, { Session, User } from 'next-auth'
 import Github from 'next-auth/providers/github'
-import Google from 'next-auth/providers/google'
+import GoogleProvider from 'next-auth/providers/google'
 import Credentials from 'next-auth/providers/credentials'
 import { UserRole } from '@prisma/client'
 import { PrismaAdapter } from '@auth/prisma-adapter'
@@ -14,6 +14,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: '/auth/login',
     error: '/auth/error'
   },
+  events: {
+    async linkAccount({ user }) {
+      await client.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() }
+      })
+    }
+  },
   callbacks: {
     async session({ token, session }) {
       if (token.sub && session.user) {
@@ -21,7 +29,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       if (token.role && session.user) {
         session.user.role = token.role as UserRole
-        session.user.emailVerifiedOn = token.emailVerifiedOn as Date | null
+        session.user.emailVerified =
+          token.emailVerified as Session['user']['emailVerified']
+        session.user.provider = token.provider as Session['user']['provider']
       }
 
       return session
@@ -31,18 +41,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token.sub) {
         const user = await getUserById(token.sub)
         if (user) {
-          token.name = `${user.firstName} ${user.lastName}`
+          const provider = await client.account.findFirst({
+            where: {
+              user: {
+                email: user.email
+              }
+            }
+          })
+          token.name = user.name
           token.role = user.role
           token.email = user.email
-          token.emailVerifiedOn = user.emailVerifiedOn
+          token.emailVerified = user.emailVerified
+          if (provider) {
+            token.provider = provider.provider
+          }
         }
       }
       return token
     }
   },
+  debug: process.env.NODE_ENV === 'development' || false,
   providers: [
-    Google,
-    Github,
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true
+    }),
+    Github({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+      allowDangerousEmailAccountLinking: true
+    }),
     Credentials({
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials)

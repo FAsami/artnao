@@ -35,8 +35,7 @@ const register = async (
     try {
       await client.user.create({
         data: {
-          firstName,
-          lastName,
+          name: `${firstName} ${lastName}`,
           password: hashedPassword,
           email
         }
