@@ -12,6 +12,7 @@ import { decrypt } from '../../../utils/cryptUtils'
 import { Spin } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { generateToken } from '../../actions/generateToken'
 
 interface FormData {
   otp: string
@@ -75,7 +76,10 @@ const EmailVerifyPage = () => {
         })
         setResult(result)
         if (result.success) {
-          router.push('/auth/set-password')
+          const token = await generateToken()
+          if (token) {
+            router.push(`/auth/set-password?token=${token}`)
+          }
         }
       }
     })

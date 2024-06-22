@@ -13,7 +13,7 @@ import { AuthActionResponse } from '../../../../types/auth'
 import { Spinner } from '../../components/Spinner'
 import { signIn } from 'next-auth/react'
 import clsx from 'clsx'
-import { BsArrowRightCircle } from 'react-icons/bs'
+import { BsArrowLeftCircle } from 'react-icons/bs'
 import { forgotPassword } from '../../actions/forgot-password'
 import { useRouter } from 'next/navigation'
 import { encrypt } from '../../../utils/cryptUtils'
@@ -131,8 +131,8 @@ const ForgotPasswordPage = () => {
         className="text-blue-600 w-full my-12 mb-12 font-semibold text-sm text-center flex items-start gap-1 justify-center"
         href="/auth/login"
       >
+        <BsArrowLeftCircle />
         <span className="translate-y-[-4px]"> Go back to login </span>
-        <BsArrowRightCircle />
       </Link>
 
       <div className="flex items-center gap-4 text-gray-300 my-4 text-sm">

@@ -6,7 +6,12 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CSSTransition } from 'react-transition-group'
-import { BiCheckCircle, BiErrorCircle } from 'react-icons/bi'
+import {
+  BiCheckCircle,
+  BiErrorCircle,
+  BiSolidHome,
+  BiSolidInfoCircle
+} from 'react-icons/bi'
 import { useState, useTransition } from 'react'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { ResetPasswordSchema } from '../../../schemas'
@@ -14,8 +19,9 @@ import { AuthActionResponse } from '../../../../types/auth'
 import { Spinner } from '../../components/Spinner'
 import { signIn } from 'next-auth/react'
 import clsx from 'clsx'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { resetPassword } from '../../actions/reset-password'
+import { client } from '../../../lib/prismaClient'
 
 const ResetPasswordPage = () => {
   const {
@@ -27,9 +33,11 @@ const ResetPasswordPage = () => {
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
       confirmPassword: '',
-      password: ''
+      password: '',
+      token: ''
     }
   })
+
   const [isPending, startTransition] = useTransition()
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -39,15 +47,23 @@ const ResetPasswordPage = () => {
     error: ''
   })
   const router = useRouter()
+  const search = useSearchParams()
+  const token = search.get('token')
 
   const onSubmit = async (values: z.infer<typeof ResetPasswordSchema>) => {
     startTransition(async () => {
-      const result = await resetPassword(values)
-      setResult(result)
-      if (result?.success) {
-        router.push('/')
-      } else {
-        reset()
+      if (token) {
+        const result = await resetPassword({
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+          token
+        })
+        setResult(result)
+        if (result?.success) {
+          router.push('/')
+        } else {
+          reset()
+        }
       }
     })
   }
@@ -70,6 +86,22 @@ const ResetPasswordPage = () => {
       type: 'password'
     }
   ]
+  if (!token) {
+    return (
+      <div className="flex items-center flex-col gap-8 justify-center h-full px-14">
+        <BiSolidInfoCircle className="text-red-500 text-5xl" />
+        <div className="text-sm text-center text-neutral-700">
+          Something went wrong. Please make sure you have access to this page.
+        </div>
+        <Link
+          className="text-blue-600 flex items-center gap-1 text-sm"
+          href="/"
+        >
+          <BiSolidHome /> Home
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -131,6 +163,7 @@ const ResetPasswordPage = () => {
             )
           })}
           <button
+            type="submit"
             disabled={isPending}
             className="w-full h-11 flex items-center justify-center gap-2 py-2.5 text-neutral-600 text-base font-semibold bg-amber-400 rounded disabled:bg-amber-100 disabled:cursor-not-allowed"
           >

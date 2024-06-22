@@ -57,7 +57,8 @@ export const VerifyEmailSchema = z.object({
 export const ResetPasswordSchema = z
   .object({
     password: RegisterSchema.shape.password,
-    confirmPassword: z.string()
+    confirmPassword: z.string(),
+    token: z.string()
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',

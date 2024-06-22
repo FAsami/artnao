@@ -55,3 +55,14 @@ model Otp {
   updatedAt DateTime @updatedAt @map("updated_at")
   createdAt DateTime @default(now()) @map("created_at")
 }
+
+model Token {
+  id      String   @id @default(cuid())
+  email   String
+  type    String
+  isValid Boolean
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
