@@ -7,12 +7,12 @@ export default auth((req) => {
   }
 
   if (req.auth) {
-    if (
-      authRoutes.includes(req.nextUrl.pathname) &&
-      !req.auth.user.emailVerified
-    ) {
-      return Response.redirect(new URL('/auth/verify-email', req.nextUrl))
-    }
+    // if (
+    //   authRoutes.includes(req.nextUrl.pathname) &&
+    //   !req.auth.user.emailVerified
+    // ) {
+    //   return Response.redirect(new URL('/auth/verify-email', req.nextUrl))
+    // }
     if (authRoutes.includes(req.nextUrl.pathname)) {
       return Response.redirect(new URL('/', req.nextUrl))
     }
@@ -38,11 +38,11 @@ export const config = {
   matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico).*)']
 }
 
-const publicRoutes = ['/', '/404']
-
-const authRoutes = [
-  '/auth/login',
-  '/auth/register',
-  '/auth/error',
+const publicRoutes = [
+  '/',
+  '/404',
+  '/auth/verify-email',
   '/auth/forgot-password'
 ]
+
+const authRoutes = ['/auth/login', '/auth/register', '/auth/error']

@@ -18,7 +18,7 @@ export const login = async (
   const { email, password } = validatedFields.data
 
   try {
-    await signIn('credentials', {
+    await signIn('email_password', {
       email,
       password,
       redirect: false

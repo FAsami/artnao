@@ -5,7 +5,7 @@ import Credentials from 'next-auth/providers/credentials'
 import { UserRole } from '@prisma/client'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { client } from './lib/prismaClient'
-import { LoginSchema } from './schemas'
+import { LoginSchema, VerifyEmailSchema } from './schemas'
 import { getUserByEmail, getUserById } from './query/user'
 import bcrypt from 'bcryptjs'
 
@@ -73,6 +73,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       allowDangerousEmailAccountLinking: true
     }),
     Credentials({
+      id: 'email_password',
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials)
         if (validatedFields.success) {
@@ -82,6 +83,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!user || !user.password) return null
           const passwordsMatch = await bcrypt.compare(password, user.password)
           if (passwordsMatch) return user
+          return null
+        }
+        return null
+      }
+    }),
+    Credentials({
+      id: 'email_otp',
+      async authorize(credentials) {
+        const validatedFields = VerifyEmailSchema.safeParse(credentials)
+        if (validatedFields.success) {
+          const { email, otp } = validatedFields.data
+          const userOtp = await client.otp.findFirst({
+            where: {
+              email,
+              isValid: true
+            }
+          })
+
+          if (!userOtp || !userOtp.token) return null
+          const isMatched = await bcrypt.compare(otp, userOtp.token)
+          if (isMatched) {
+            const user = getUserByEmail(email)
+            return user
+          }
           return null
         }
         return null

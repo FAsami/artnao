@@ -40,12 +40,11 @@ const register = async (
           email
         }
       })
-      await signIn('credentials', {
+      await signIn('email_password', {
         email,
         password,
         redirect: false
       })
-
       return { success: true, message: 'Logged in successfully' }
     } catch (error) {
       if (error instanceof AuthError) {

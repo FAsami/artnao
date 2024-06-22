@@ -6,10 +6,12 @@ import { Spinner } from '../../components/Spinner'
 import { MdOutlineMarkEmailUnread } from 'react-icons/md'
 import OtpInput from './OtpInput'
 import { useSession } from 'next-auth/react'
-import { sendOTP } from '../../actions/send-otp'
-import { useRouter } from 'next/navigation'
 import { verifyEmail } from '../../actions/verify-email'
-import { BiErrorCircle } from 'react-icons/bi'
+import { BiErrorCircle, BiSolidHome, BiSolidInfoCircle } from 'react-icons/bi'
+import { decrypt } from '../../../utils/cryptUtils'
+import { Spin } from 'antd'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface FormData {
   otp: string
@@ -18,43 +20,90 @@ interface FormData {
 const EmailVerifyPage = () => {
   const { handleSubmit, control } = useForm<FormData>()
   const [isPending, startTransition] = useTransition()
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [email, setEmail] = useState<string | null>(null)
+
   const [result, setResult] = useState<AuthActionResponse>({
     success: false,
     message: '',
     error: ''
   })
-  const { data, status } = useSession()
+  const { data } = useSession()
+  const router = useRouter()
 
   const handleResendOTP = async () => {
-    if (data?.user?.email && data?.user.name) {
-      await sendOTP({
-        email: data?.user?.email,
-        firstName: data?.user.name
-      })
-    }
+    router.back()
   }
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      window.location.reload()
-    } else {
-      setIsLoading(false)
+    if (loading) {
+      const fetch = async () => {
+        const key = sessionStorage.getItem('key')
+        if (typeof key === 'string') {
+          try {
+            const data = (await decrypt(key)) as { email?: string }
+
+            if (data?.email) {
+              setEmail(data.email)
+            } else {
+              setEmail(null)
+            }
+          } catch (error) {
+            console.error('Error decrypting:', error)
+            setEmail(null)
+          }
+        } else {
+          setEmail(null)
+        }
+        setLoading(false)
+      }
+      if (data?.user.email) {
+        setEmail(data?.user.email)
+        setLoading(false)
+      } else {
+        fetch()
+      }
     }
-  }, [status, router])
+  }, [data?.user, loading])
 
   const onSubmit = async (data: FormData) => {
-    const result = await verifyEmail({ otp: data.otp })
-    console.log(result)
-    setResult(result)
-    if (result.success) {
-      router.push('/')
-    }
+    startTransition(async () => {
+      if (email) {
+        const result = await verifyEmail({
+          email,
+          otp: data.otp
+        })
+        setResult(result)
+        if (result.success) {
+          router.push('/auth/set-password')
+        }
+      }
+    })
   }
-  if (isLoading) {
-    return <div>Loading</div>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spin />
+      </div>
+    )
   }
+  if (!email) {
+    return (
+      <div className="flex items-center flex-col gap-8 justify-center h-full px-14">
+        <BiSolidInfoCircle className="text-red-500 text-5xl" />
+        <div className="text-sm text-center text-neutral-700">
+          Something went wrong. Please make sure you have access to this page.
+        </div>
+        <Link
+          className="text-blue-600 flex items-center gap-1 text-sm"
+          href="/"
+        >
+          <BiSolidHome /> Home
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <div className="p-6">
       <h3 className="text-xl font-bold mb-4 text-center flex items-center justify-center gap-2">
@@ -65,11 +114,11 @@ const EmailVerifyPage = () => {
       </div>
       <div className="text-sm py-6 text-neutral-700">
         6 digit code has been sent to{' '}
-        <span className="text-green-600">{data?.user?.email}</span> Please enter
-        the code to verify your email
+        <span className="text-green-600">{email}</span> Please enter the code to
+        verify your email
       </div>
       <button onClick={handleResendOTP} className="text-sm text-blue-500 mb-4">
-        Didn&rsquo;t received an OTP ? resend in 00:10:09
+        Didn&rsquo;t received an OTP ?
       </button>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -89,7 +138,7 @@ const EmailVerifyPage = () => {
         </button>
       </form>
       {result.error && !isPending && (
-        <div className="rounded bg-red-100 text-red-400 text-sm font-semibold px-4 py-3 flex items-center justify-between">
+        <div className="rounded bg-red-100 text-red-400 text-sm font-semibold px-4 py-3 flex items-center justify-between mt-3">
           <div>{result.error}</div>
           <div>{<BiErrorCircle />}</div>
         </div>
