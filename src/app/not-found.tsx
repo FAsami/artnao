@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaArrowRight } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
 
 const NotFound = () => {
   return (
-    <div className="h-screen w-screen flex items-center justify-center flex-col">
+    <div className="flex items-center justify-center flex-col">
       <Image src="/gif/error-404.gif" alt="Login" width={300} height={300} />
       <div className="flex flex-col items-center justify-center">
         <div className="text-5xl text-center mb-2 text-gray-800 font-extrabold">
@@ -15,9 +15,10 @@ const NotFound = () => {
         </div>
         <Link
           href="/"
-          className="text-neutral-600 px-6 py-2 mt-8 text-base rounded flex items-center gap-2"
+          className="text-neutral-600  mt-8 text-base  flex items-center gap-2 bg-amber-200 rounded-sm px-4 py-2"
         >
-          Let me take you to home <FaArrowRight className="text-neutral-600" />
+          <FaArrowLeft className="text-neutral-900" />
+          Home page
         </Link>
       </div>
     </div>
