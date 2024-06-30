@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Nunito_Sans } from 'next/font/google'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import '../globals.css'
 import 'animate.css'
@@ -7,7 +6,8 @@ import { ConfigProvider } from 'antd'
 import { theme } from '../theme/antd'
 import { SessionProvider } from 'next-auth/react'
 import { auth } from '../auth'
-const font = Nunito_Sans({ subsets: ['latin'] })
+import { Header } from './components'
+import { playfair } from './fonts'
 
 export const metadata: Metadata = {
   title: 'Artnao',
@@ -23,7 +23,7 @@ const RootLayout = async ({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={`${font.className}`}>
+        <body className={`${playfair.className}`}>
           <AntdRegistry>
             <ConfigProvider theme={theme}>
               <div className="bg-slate-50">
@@ -36,7 +36,7 @@ const RootLayout = async ({
                     className="overflow-y-auto"
                   >
                     <main
-                      className="max-w-[1224px] px-3 mx-auto"
+                      className="max-w-screen-xl px-3 mx-auto"
                       style={{
                         minHeight: 'calc(100vh - 80px)'
                       }}
@@ -56,13 +56,6 @@ const RootLayout = async ({
 }
 export default RootLayout
 
-const Header = () => {
-  return (
-    <header className="h-20 bg-white w-screen shadow-sm z-50 relative">
-      <div className="max-w-[1200px] mx-auto"></div>
-    </header>
-  )
-}
 const Footer = () => {
   return <footer className="bg-amber-500 min-h-80"></footer>
 }
