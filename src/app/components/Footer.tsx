@@ -17,7 +17,7 @@ import { MdOutlineGavel, MdPrivacyTip } from 'react-icons/md'
 
 const Footer = () => {
   return (
-    <footer className="bg-amber-400 pt-10 border-t-4 border-t-slate-300">
+    <footer className="bg-amber-300 pt-10 border-t-4 border-t-slate-300">
       <div className="max-w-screen-xl mx-auto px-3 py-6">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
@@ -129,7 +129,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="text-center text-sm text-gray-700 border-t border-t-amber-300 py-4">
+      <div className="text-center text-sm text-gray-700 border-t border-t-amber-400 py-4">
         copyright &copy;2024{' '}
         <Link href="https://www.foysal.dev/">foysal.dev</Link>
       </div>
