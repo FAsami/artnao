@@ -6,7 +6,7 @@ import { ConfigProvider } from 'antd'
 import { theme } from '../theme/antd'
 import { SessionProvider } from 'next-auth/react'
 import { auth } from '../auth'
-import { Header } from './components'
+import { Header, Footer } from './components'
 import { playfair } from './fonts'
 
 export const metadata: Metadata = {
@@ -55,7 +55,3 @@ const RootLayout = async ({
   )
 }
 export default RootLayout
-
-const Footer = () => {
-  return <footer className="bg-amber-500 min-h-80"></footer>
-}
