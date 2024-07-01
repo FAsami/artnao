@@ -31,7 +31,7 @@ const Header = () => {
           </Link>
           <div className="h-1 bg-amber-500 w-32 mt-auto rounded-full" />
         </div>
-        <div className="flex items-center gap-2 text-base font-semibold text-gray-700 tracking-wider relative px-4 h-full">
+        <div className="flex items-center gap-2 text-base font-medium text-gray-700 tracking-wider relative px-4 h-full">
           {navigation.map(({ id, title, url }) => {
             return (
               <Link
@@ -49,9 +49,12 @@ const Header = () => {
 
           <div className="h-1 bg-gray-100 w-full mt-auto rounded-full absolute bottom-0 left-0 right-0" />
         </div>
-        <div className="w-fit bg-amber-300 text-gray-900 font-semibold px-6 py-2 rounded-sm">
+        <Link
+          href="/auth/login"
+          className="w-fit bg-amber-300 text-gray-900 font-medium px-6 py-2 rounded-sm"
+        >
           Login
-        </div>
+        </Link>
       </div>
     </header>
   )
