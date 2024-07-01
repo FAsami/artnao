@@ -1,8 +1,14 @@
-import { Great_Vibes, Playfair_Display } from 'next/font/google'
+import { Comic_Neue, Marck_Script } from 'next/font/google'
 
-const playfair = Playfair_Display({
-  subsets: ['latin']
+const primary = Comic_Neue({
+  subsets: ['latin'],
+  variable: '--font-primary',
+  weight: ['400', '400', '700']
 })
-const caveat = Great_Vibes({ subsets: ['latin'], weight: '400' })
+const secondary = Marck_Script({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-secondary'
+})
 
-export { playfair, caveat }
+export { primary, secondary }

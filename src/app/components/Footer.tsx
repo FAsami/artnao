@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import { caveat } from '../fonts'
 import {
   FaFacebook,
   FaTwitter,
@@ -23,13 +22,12 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
             <Link href="/">
               <div
-                className={clsx(
-                  'w-fit flex h-full items-center text-4xl mb-4',
-                  caveat.className
-                )}
+                className={clsx('w-fit flex h-full items-center text-4xl mb-4')}
               >
-                <span className="text-white font-normal">art</span>
-                <span className="text-gray-700">nao</span>
+                <span className="text-white font-normal font-secondary">
+                  art
+                </span>
+                <span className="text-gray-700 font-secondary">nao</span>
               </div>
             </Link>
             <div className="flex space-x-4">

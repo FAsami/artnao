@@ -7,7 +7,7 @@ import { theme } from '../theme/antd'
 import { SessionProvider } from 'next-auth/react'
 import { auth } from '../auth'
 import { Header, Footer } from './components'
-import { playfair } from './fonts'
+import { primary, secondary } from './fonts'
 
 export const metadata: Metadata = {
   title: 'Artnao',
@@ -23,7 +23,9 @@ const RootLayout = async ({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={`${playfair.className}`}>
+        <body
+          className={`${primary.variable} ${secondary.variable} ${primary.className}`}
+        >
           <AntdRegistry>
             <ConfigProvider theme={theme}>
               <div className="bg-slate-50">
@@ -36,7 +38,7 @@ const RootLayout = async ({
                     className="overflow-y-auto"
                   >
                     <main
-                      className="max-w-screen-xl px-3 mx-auto"
+                      className="max-w-screen-xl px-3 mx-auto font-primary"
                       style={{
                         minHeight: 'calc(100vh - 80px)'
                       }}

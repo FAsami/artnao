@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: var(--font-primary);
+}
 .spinner {
   box-sizing: border-box;
   display: block;
@@ -17,4 +21,13 @@
 
 :root {
   --header-height: 5rem;
+}
+.custom-dots > li {
+  width: 12px !important;
+  height: 12px !important;
+}
+.custom-dots > li > button {
+  height: 12px !important;
+  border-radius: 9999px !important;
+  background-color: #fcd34d !important;
 }
