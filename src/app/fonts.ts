@@ -1,6 +1,6 @@
-import { Comic_Neue, Marck_Script } from 'next/font/google'
+import { Comic_Neue, Marck_Script, Quicksand } from 'next/font/google'
 
-const primary = Comic_Neue({
+const primary = Quicksand({
   subsets: ['latin'],
   variable: '--font-primary',
   weight: ['400', '400', '700']
