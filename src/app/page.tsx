@@ -1,8 +1,12 @@
 import React from 'react'
-import { client } from '../lib/prismaClient'
+import { HeroSection } from './components/home'
 
 const HomePage = async () => {
-  return <div className="text-center">HomePage</div>
+  return (
+    <div className="mt-4">
+      <HeroSection />
+    </div>
+  )
 }
 
 export default HomePage
