@@ -2,6 +2,7 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { BsCart3 } from 'react-icons/bs'
 
 const Header = () => {
   const navigation = [
@@ -49,12 +50,20 @@ const Header = () => {
 
           <div className="h-1 bg-gray-100 w-full mt-auto rounded-full absolute bottom-0 left-0 right-0" />
         </div>
-        <Link
-          href="/auth/login"
-          className="w-fit bg-amber-300 text-gray-900 font-medium px-6 py-2 rounded-sm"
-        >
-          Login
-        </Link>
+        <div className="flex items-center gap-8">
+          <div className="relative">
+            <BsCart3 className="text-amber-500 text-3xl" />
+            <div className="flex items-center justify-center absolute -top-1 -right-1 h-5 w-5 bg-amber-600 rounded-full text-xs text-white font-semibold p-1">
+              10
+            </div>
+          </div>
+          <Link
+            href="/auth/login"
+            className="w-fit bg-amber-300 text-gray-900 font-medium px-6 py-2 rounded-sm"
+          >
+            Login
+          </Link>
+        </div>
       </div>
     </header>
   )
