@@ -1,23 +1,6 @@
-// components/TopArtists.js
 import clsx from 'clsx'
 import Image from 'next/image'
 import { BsBehance, BsDribbble, BsInstagram } from 'react-icons/bs'
-import { GoTrophy } from 'react-icons/go'
-
-// Utility function to generate random color classes for tags
-const getRandomColorClass = (index: number) => {
-  const colors = [
-    'bg-red-100',
-    'bg-blue-100',
-    'bg-green-100',
-    'bg-yellow-100',
-    'bg-purple-100',
-    'bg-pink-100',
-    'bg-indigo-100',
-    'bg-teal-100'
-  ]
-  return colors[index % colors.length]
-}
 
 const artists = [
   {
@@ -60,12 +43,16 @@ const TopArtists = () => {
           {artists.map((artist, index) => (
             <div
               key={index}
-              className={clsx('relative bg-white px-3 pb-6 pt-16 rounded-md', {
-                'md:order-2 -translate-y-24 relative z-10': artist.rank === 1,
-                'md:order-1 md:-rotate-12 md:translate-x-12 ':
-                  artist.rank === 2,
-                'md:order-3 md:rotate-12 md:-translate-x-8 ': artist.rank === 3
-              })}
+              className={clsx(
+                'relative bg-white px-3 pb-6 pt-16 rounded-md shadow-sm',
+                {
+                  'md:order-2 -translate-y-24 relative z-10': artist.rank === 1,
+                  'md:order-1 md:-rotate-12 md:translate-x-12 ':
+                    artist.rank === 2,
+                  'md:order-3 md:rotate-12 md:-translate-x-8 ':
+                    artist.rank === 3
+                }
+              )}
             >
               <div className="absolute top-0 left-0 min-w-20 min-h-20 pl-5 flex justify-center items-center text-5xl font-semibold text-white  bg-amber-400 py-2 px-6 rounded-br gap-2">
                 {artist.rank}
@@ -84,18 +71,6 @@ const TopArtists = () => {
                 <h3 className="font-semibold text-xl text-slate-900 mb-4">
                   {artist.name}
                 </h3>
-                {/* <div className="flex flex-wrap justify-center space-x-1">
-                  {artist.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className={`uppercase font-semibold text-[10px] rounded-full text-gray-900 px-3 p-1 ${getRandomColorClass(
-                        i
-                      )}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div> */}
 
                 <p className="text-gray-500 my-8 text-sm text-left">
                   {artist.description}
