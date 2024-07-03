@@ -1,11 +1,17 @@
-import { TopArtists, TopArtworks, HeroSection } from './components/home/'
+import {
+  TopArtists,
+  TopArtworks,
+  HeroSection,
+  ArtworkCategories
+} from './components/home/'
 
 const HomePage = async () => {
   return (
     <div className="mt-4">
       <HeroSection />
-      <TopArtists />
+      <ArtworkCategories />
       <TopArtworks />
+      <TopArtists />
     </div>
   )
 }
