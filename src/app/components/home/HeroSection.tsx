@@ -61,7 +61,7 @@ const HeroSection = () => {
 
                 <Link
                   href={callToAction.url}
-                  className="bg-amber-600 text-white px-6 py-2.5 hover:text-gray-700 rounded-sm w-fit font-secondary flex items-center gap-2 text-2xl hover:bg-amber-300"
+                  className="bg-amber-600 text-white px-6 py-3 hover:text-gray-700 rounded-sm w-fit  flex items-center gap-2 text-base hover:bg-amber-300"
                 >
                   {callToAction.label} <BiChevronRight />
                 </Link>

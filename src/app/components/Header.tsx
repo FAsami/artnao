@@ -20,7 +20,7 @@ const Header = () => {
           <Link href="/">
             <div
               className={clsx(
-                'w-fit flex h-full items-center text-4xl translate-x-1/4 font-secondary'
+                'w-fit flex h-full items-center text-3xl translate-x-1/4 font-secondary'
               )}
             >
               <span className="text-amber-500 font-normal font-secondary">
