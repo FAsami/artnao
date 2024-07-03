@@ -2,7 +2,8 @@ import {
   TopArtists,
   TopArtworks,
   HeroSection,
-  ArtworkCategories
+  ArtworkCategories,
+  FAQSection
 } from './components/home/'
 
 const HomePage = async () => {
@@ -12,6 +13,7 @@ const HomePage = async () => {
       <ArtworkCategories />
       <TopArtworks />
       <TopArtists />
+      <FAQSection />
     </div>
   )
 }
