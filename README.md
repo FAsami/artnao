@@ -1,1 +1,1 @@
-<img width="1440" alt="image" src="https://github.com/FAsami/artnao/assets/43314398/f7e53bbc-d672-420d-9360-790f328c09d6">
+<img width="1428" alt="image" src="https://github.com/FAsami/artnao/assets/43314398/9a8a6968-5ae9-4806-82df-de05570bd50d">
