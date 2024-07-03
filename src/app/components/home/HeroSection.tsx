@@ -40,11 +40,11 @@ const HeroSection = () => {
       {sliders.map(
         ({ id, img, title, subtitle, description, callToAction }) => (
           <div key={id}>
-            <div className="flex bg-white border border-gray-100 rounded-xl p-8">
-              <div className="w-1/2 flex flex-col justify-center pr-12">
+            <div className="flex flex-col md:flex-row bg-white border border-gray-100 rounded-xl p-8">
+              <div className="w-full md:w-1/2 flex flex-col justify-center pr-0 md:pr-12 mb-8 md:mb-0">
                 <h1
                   className={clsx(
-                    'text-5xl font-bold mb-4 font-secondary tracking-wide'
+                    'text-3xl md:text-5xl font-bold mb-4 font-secondary tracking-wide'
                   )}
                 >
                   <span className="text-amber-700 font-secondary">
@@ -61,14 +61,14 @@ const HeroSection = () => {
 
                 <Link
                   href={callToAction.url}
-                  className="bg-amber-600 text-white px-6 py-3 hover:text-gray-700 rounded-sm w-fit  flex items-center gap-2 text-base hover:bg-amber-300"
+                  className="bg-amber-600 text-white px-6 py-3 hover:text-gray-700 rounded-sm w-fit flex items-center gap-2 text-base hover:bg-amber-300"
                 >
                   {callToAction.label} <BiChevronRight />
                 </Link>
               </div>
-              <div className="w-1/2 rounded-3xl overflow-hidden">
-                <div className="relative h-[75vh] w-full">
-                  <div className="absolute inset-24 overflow-hidden rounded-md -rotate-45 opacity-20 border">
+              <div className="w-full md:w-1/2 rounded-3xl overflow-hidden">
+                <div className="relative h-60 md:h-[75vh] w-full">
+                  <div className="absolute inset-8 md:inset-24 overflow-hidden rounded-md -rotate-45 opacity-20 border">
                     <Image
                       src={img}
                       alt="Art Image"
@@ -76,7 +76,7 @@ const HeroSection = () => {
                       objectFit="cover"
                     />
                   </div>
-                  <div className="absolute inset-24 overflow-hidden -rotate-3 rounded-md bg-white border">
+                  <div className="absolute inset-8 md:inset-24 overflow-hidden -rotate-3 rounded-md bg-white border">
                     <Image
                       src={img}
                       alt="Art Image"
