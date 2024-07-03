@@ -16,6 +16,7 @@ export default auth((req) => {
     if (authRoutes.includes(req.nextUrl.pathname)) {
       return Response.redirect(new URL('/', req.nextUrl))
     }
+    console.log(req.auth)
   } else {
     if (authRoutes.includes(req.nextUrl.pathname)) {
       return
@@ -42,7 +43,14 @@ const publicRoutes = [
   '/',
   '/404',
   '/auth/verify-email',
-  '/auth/forgot-password'
+  '/auth/forgot-password',
+  '/artists',
+  '/arts',
+  '/contact',
+  '/about',
+  '/terms',
+  '/privacy-policy',
+  '/refund-policy'
 ]
 
 const authRoutes = ['/auth/login', '/auth/register', '/auth/error']

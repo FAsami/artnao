@@ -118,7 +118,7 @@ const Footer = () => {
               <span className="ml-1">Privacy Policy</span>
             </Link>
             <Link
-              href="/privacy-policy"
+              href="/refund-policy"
               className="flex items-center text-gray-700 hover:text-white mt-2"
             >
               <FaMoneyCheckAlt size={20} />
