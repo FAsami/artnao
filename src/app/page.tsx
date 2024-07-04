@@ -11,8 +11,8 @@ const HomePage = async () => {
     <div className="mt-4">
       <HeroSection />
       <ArtworkCategories />
-      <TopArtworks />
       <TopArtists />
+      <TopArtworks />
       <FAQSection />
     </div>
   )
