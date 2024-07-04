@@ -40,7 +40,7 @@ const HeroSection = () => {
       {sliders.map(
         ({ id, img, title, subtitle, description, callToAction }) => (
           <div key={id}>
-            <div className="flex flex-col md:flex-row bg-white border border-gray-100 rounded-xl p-8">
+            <div className="flex shadow-sm flex-col md:flex-row bg-white border border-gray-100 rounded-xl p-8">
               <div className="w-full md:w-1/2 flex flex-col justify-center pr-0 md:pr-12 mb-8 md:mb-0">
                 <h1
                   className={clsx(
