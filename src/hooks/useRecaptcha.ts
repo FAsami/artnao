@@ -12,8 +12,6 @@ const useReCaptcha = () => {
       const { data } = await axios.post('/api/auth/re-captcha', {
         gRecaptchaToken: await executeRecaptcha(action)
       })
-      console.log({ data })
-
       return data.success
     } catch (error) {
       console.error(error)
