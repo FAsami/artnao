@@ -13,9 +13,13 @@ import { useReCaptcha } from '@/hooks/useRecaptcha'
 interface FormData {
   otp: string
 }
-
+//TODO: RESET INPUT FIELD AFTER SUBMIT
 const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
-  const { handleSubmit, control, reset } = useForm<FormData>()
+  const { handleSubmit, control, reset } = useForm<FormData>({
+    defaultValues: {
+      otp: ''
+    }
+  })
   const [isPending, startTransition] = useTransition()
 
   const [result, setResult] = useState<AuthResponse>({
@@ -53,7 +57,6 @@ const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
         if (result.success) {
           redirect('/auth/set-password')
         }
-        reset()
       }
     })
   }
@@ -67,14 +70,15 @@ const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
         <Controller
           name="otp"
           control={control}
-          render={() => <OtpInput control={control} name="otp" length={6} />}
+          render={({ field }) => (
+            <OtpInput {...field} control={control} name="otp" length={6} />
+          )}
         />
-
         <button
           disabled={isPending}
           className="w-full h-11 flex items-center justify-center gap-2 py-2.5 text-neutral-600 text-base font-semibold bg-primary-400 rounded disabled:bg-primary-100 disabled:cursor-not-allowed mt-4"
         >
-          {isPending ? <Spinner /> : 'submit'}
+          {isPending ? <Spinner /> : 'Submit'}
         </button>
       </form>
       <button
@@ -87,7 +91,9 @@ const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
       {result.error && !isPending && (
         <div className="rounded bg-red-100 text-red-400 text-sm font-normal px-4 py-3 flex items-center justify-between mt-3">
           <div>{result.error}</div>
-          <div>{<BiErrorCircle />}</div>
+          <div>
+            <BiErrorCircle />
+          </div>
         </div>
       )}
       {result.success && !isPending && (

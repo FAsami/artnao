@@ -5,6 +5,7 @@ import { AuthResponse } from '@/types/auth'
 import * as z from 'zod'
 import bcrypt from 'bcryptjs'
 import { client } from '@/lib/prismaClient'
+import { signIn } from '@/auth'
 
 const registrationAction = async (
   values: z.infer<typeof RegisterSchema>
@@ -36,7 +37,11 @@ const registrationAction = async (
         email
       }
     })
-
+    await signIn('email_password', {
+      email,
+      password,
+      redirect: false
+    })
     return { success: true, message: 'Registered' }
   } catch (error) {
     console.error(error)
