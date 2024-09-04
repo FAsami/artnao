@@ -24,3 +24,12 @@ export const RegisterSchema = z.object({
     message: 'Last name is required'
   })
 })
+
+export const VerifyEmailSchema = z.object({
+  email: z.string().email({
+    message: 'Email is required'
+  }),
+  otp: z.string().length(6, {
+    message: 'OTP is not valid'
+  })
+})

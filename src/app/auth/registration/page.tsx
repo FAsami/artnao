@@ -16,6 +16,7 @@ import { AuthResponse } from '@/types/auth'
 import { registrationAction } from './action'
 import { inputFields } from './inputFields'
 import { redirect } from 'next/navigation'
+import { sendOTP } from '../verify/actions/sendOTP'
 
 const RegistrationPage = () => {
   const {
@@ -50,14 +51,21 @@ const RegistrationPage = () => {
       })
       const isVerified = await verifyReCaptcha('register')
       if (isVerified) {
-        const key = await encrypt({ email: values.email, scope: 'REGISTER' })
-        sessionStorage.setItem('key', key)
         const result = await registrationAction(values)
         if (result) {
           setResult(result)
           if (result.success) {
-            //Redirect to verify email or phone page
-            // redirect('/auth/verify-email')
+            const token = await encrypt({
+              email: values.email,
+              name: `${values.firstName} ${values.lastName}`,
+              scope: 'REGISTER'
+            })
+
+            await sendOTP({
+              name: `${values.firstName} ${values.lastName}`,
+              email: values.email
+            })
+            redirect(`/auth/verify?token=${encodeURIComponent(token)}`)
           }
         }
       } else {
