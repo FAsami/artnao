@@ -16,8 +16,6 @@ import clsx from 'clsx'
 import { login } from './action'
 import { useReCaptcha } from '@/hooks/useRecaptcha'
 import { redirect } from 'next/navigation'
-import Github from 'next-auth/providers/github'
-import { BsGithub } from 'react-icons/bs'
 
 const LoginPage = () => {
   const {

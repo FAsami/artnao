@@ -1,4 +1,4 @@
-import NextAuth, { Session, User } from 'next-auth'
+import NextAuth, { Session, User, NextAuthConfig } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import Credentials from 'next-auth/providers/credentials'
 import { UserRole } from '@prisma/client'
@@ -8,7 +8,7 @@ import { LoginSchema, VerifyEmailSchema } from '@/schema'
 import { getUserByEmail, getUserById } from '@/query/user'
 import bcrypt from 'bcryptjs'
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const authConfig: NextAuthConfig = {
   pages: {
     signIn: '/auth/login',
     error: '/auth/error'
@@ -91,4 +91,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   adapter: PrismaAdapter(client),
   session: { strategy: 'jwt' }
-})
+}
+
+export const { handlers, signIn, signOut, auth } = NextAuth(authConfig)

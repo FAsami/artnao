@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { FaGithub } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -16,8 +15,8 @@ import clsx from 'clsx'
 import { BsArrowLeftCircle } from 'react-icons/bs'
 import { forgotPassword } from './action'
 import { redirect, useRouter } from 'next/navigation'
-import { encrypt } from '@/utils/encrypt'
 import { useReCaptcha } from '@/hooks/useRecaptcha'
+import { encrypt } from '@/utils/encrypt'
 
 const ForgotPasswordPage = () => {
   const {
@@ -44,9 +43,9 @@ const ForgotPasswordPage = () => {
     startTransition(async () => {
       const isVerified = await verifyReCaptcha('forgotPassword')
       if (isVerified) {
-        const result = await forgotPassword(values)
-        if (result) {
-          setResult(result)
+        const response = await forgotPassword(values)
+        setResult(response)
+        if (response.success) {
           if (result.success) {
             const token = await encrypt({
               email: values.email,
@@ -61,25 +60,7 @@ const ForgotPasswordPage = () => {
         setResult({
           success: false,
           error:
-            'We’re sorry, but we couldn’t verify that you are a human. Please try again. If you continue to experience issues, please contact our support team for assistance.'
-        })
-      }
-      if (isVerified) {
-        const result = await forgotPassword(values)
-        setResult(result)
-        const key = await encrypt({
-          email: values.email,
-          scope: 'FORGOT_PASSWORD'
-        })
-        sessionStorage.setItem('key', key)
-        if (result.success) {
-          router.push(`/auth/verify-email`)
-        }
-      } else {
-        setResult({
-          success: false,
-          error:
-            'We’re sorry, but we couldn’t verify that you are a human. Please try again. If you continue to experience issues, please contact our support team for assistance.'
+            'Something went wrong. Please try again. If you continue to experience issues, please contact our support team for assistance.'
         })
       }
     })

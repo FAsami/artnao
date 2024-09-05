@@ -8,33 +8,36 @@ import { client } from '@/lib/prismaClient'
 export const forgotPassword = async (
   values: z.infer<typeof ForgotPasswordSchema>
 ): Promise<AuthResponse> => {
-  const validatedFields = ForgotPasswordSchema.safeParse(values)
+  try {
+    const validatedFields = ForgotPasswordSchema.safeParse(values)
 
-  if (!validatedFields.success) {
-    return { success: false, error: 'Invalid fields !' }
-  }
-
-  const { email } = validatedFields.data
-  const user = await client.user.findFirst({
-    where: {
-      email
+    if (!validatedFields.success) {
+      return { success: false, error: 'Invalid fields !' }
     }
-  })
 
-  const provider = await client.account.findMany({
-    where: {
-      userId: user?.id
-    }
-  })
+    const { email } = validatedFields.data
+    const user = await client.user.findFirst({
+      where: {
+        email
+      }
+    })
 
-  if (user?.name && !provider.length) {
-    try {
-      await sendOTP({ email, name: user.name })
-      return { success: true, message: 'OTP sent successfully' }
-    } catch (error) {
-      return { success: false, error: 'Failed to send OTP' }
+    const provider = await client.account.findMany({
+      where: {
+        userId: user?.id
+      }
+    })
+
+    if (!user?.name) {
+      return { success: false, error: 'No user is associated with this email.' }
     }
-  } else {
-    return { success: false, error: 'No user is associated with this email.' }
+    if (!provider.length) {
+      return { success: false, error: 'No user is associated with this email.' }
+    }
+    await sendOTP({ email, name: user.name })
+
+    return { success: true, message: 'OTP sent successfully' }
+  } catch (error) {
+    return { success: true, message: 'Something went wrong' }
   }
 }
