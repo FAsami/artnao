@@ -7,6 +7,7 @@ import 'animate.css'
 import '../styles/globals.css'
 
 import { Inter } from 'next/font/google'
+import { Header } from '@/components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -22,11 +23,14 @@ export default function RootLayout({
   return (
     <AntdRegistry>
       <ConfigProvider theme={theme}>
-        <html lang="en">
-          <body className={inter.className}>
-            <ReCaptchaProvider>{children}</ReCaptchaProvider>
-          </body>
-        </html>
+        <ReCaptchaProvider>
+          <html lang="en">
+            <body className={inter.className}>
+              <Header />
+              {children}
+            </body>
+          </html>
+        </ReCaptchaProvider>
       </ConfigProvider>
     </AntdRegistry>
   )

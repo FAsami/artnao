@@ -1,5 +1,4 @@
 import NextAuth, { Session, User } from 'next-auth'
-import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import Credentials from 'next-auth/providers/credentials'
 import { UserRole } from '@prisma/client'
@@ -54,16 +53,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   debug: process.env.NODE_ENV === 'development' || false,
   providers: [
-    // GoogleProvider({
-    //   clientId: process.env.AUTH_GOOGLE_ID,
-    //   clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    //   allowDangerousEmailAccountLinking: true
-    // }),
-    // GithubProvider({
-    //   clientId: process.env.AUTH_GOOGLE_ID,
-    //   clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    //   allowDangerousEmailAccountLinking: true
-    // }),
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true
+    }),
     Credentials({
       id: 'email_password',
       async authorize(credentials) {

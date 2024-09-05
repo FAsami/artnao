@@ -5,7 +5,6 @@ export const getUserByEmail = async (email: string) => {
     const user = await client.user.findUnique({ where: { email } })
     return user
   } catch (e) {
-    console.log(e)
     return null
   }
 }

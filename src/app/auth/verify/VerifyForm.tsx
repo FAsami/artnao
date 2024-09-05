@@ -16,7 +16,6 @@ interface FormData {
 }
 //TODO: RESET INPUT FIELD AFTER SUBMIT
 const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
-  console.log()
   const { handleSubmit, control, reset } = useForm<FormData>({
     defaultValues: {
       otp: ''
