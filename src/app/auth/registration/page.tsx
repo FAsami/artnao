@@ -16,7 +16,6 @@ import { AuthResponse } from '@/types/auth'
 import { registrationAction } from './action'
 import { inputFields } from './inputFields'
 import { redirect } from 'next/navigation'
-import { sendOTP } from '../verify/actions/sendOTP'
 
 const RegistrationPage = () => {
   const {

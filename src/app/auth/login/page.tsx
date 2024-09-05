@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { FaGithub } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -16,8 +15,7 @@ import { signIn } from 'next-auth/react'
 import clsx from 'clsx'
 import { login } from './action'
 import { useReCaptcha } from '@/hooks/useRecaptcha'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 const LoginPage = () => {
   const {
@@ -40,8 +38,6 @@ const LoginPage = () => {
     message: '',
     error: ''
   })
-  const searchParams = useSearchParams()
-  const router = useRouter()
   const { verifyReCaptcha } = useReCaptcha()
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
@@ -51,8 +47,7 @@ const LoginPage = () => {
         const result = await login(values)
         setResult(result)
         if (result?.success) {
-          router.replace(searchParams.get('callbackUrl') || '/')
-          router.refresh()
+          redirect('/')
         } else {
           reset()
         }
