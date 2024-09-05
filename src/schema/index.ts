@@ -42,3 +42,20 @@ export const VerifyEmailSchema = z.object({
     message: 'OTP is not valid'
   })
 })
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email({
+    message: 'Email is required'
+  })
+})
+
+export const ResetPasswordSchema = z
+  .object({
+    password: RegisterSchema.shape.password,
+    confirmPassword: z.string(),
+    token: z.string()
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword']
+  })

@@ -9,12 +9,14 @@ import { BiErrorCircle } from 'react-icons/bi'
 import { redirect } from 'next/navigation'
 import { sendOTP } from './actions/sendOTP'
 import { useReCaptcha } from '@/hooks/useRecaptcha'
+import { generateToken } from './actions/generateToken'
 
 interface FormData {
   otp: string
 }
 //TODO: RESET INPUT FIELD AFTER SUBMIT
 const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
+  console.log()
   const { handleSubmit, control, reset } = useForm<FormData>({
     defaultValues: {
       otp: ''
@@ -55,7 +57,8 @@ const VerifyOTPForm = ({ email, name }: { email: string; name: string }) => {
         })
         setResult(result)
         if (result.success) {
-          redirect('/auth/set-password')
+          const token = (await generateToken()) as string
+          redirect(`/auth/set-password?token=${encodeURIComponent(token)}`)
         }
       }
     })

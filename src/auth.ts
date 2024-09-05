@@ -84,18 +84,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         const validatedFields = VerifyEmailSchema.safeParse(credentials)
         if (validatedFields.success) {
-          const { email, otp } = validatedFields.data
-          const userOtp = await client.otp.findFirst({
-            where: {
-              email,
-              isValid: true
-            }
-          })
-
-          if (!userOtp || !userOtp.token) return null
-          const isMatched = await bcrypt.compare(otp, userOtp.token)
-          if (isMatched) {
-            const user = getUserByEmail(email)
+          const { email } = validatedFields.data
+          const user = getUserByEmail(email)
+          if (user) {
             return user
           }
           return null

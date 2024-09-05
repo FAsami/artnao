@@ -1,39 +1,37 @@
 'use client'
 import Link from 'next/link'
+import { FaGithub } from 'react-icons/fa6'
+import { FcGoogle } from 'react-icons/fc'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import clsx from 'clsx'
 import { CSSTransition } from 'react-transition-group'
 import { BiCheckCircle, BiErrorCircle } from 'react-icons/bi'
 import { useState, useTransition } from 'react'
-import { FiEye, FiEyeOff } from 'react-icons/fi'
-import { RegisterSchema } from '@/schema'
-import { useReCaptcha } from '@/hooks/useRecaptcha'
-import { encrypt } from '@/utils/encrypt'
-import { Spinner } from '@/components'
+import { ForgotPasswordSchema } from '@/schema'
 import { AuthResponse } from '@/types/auth'
-import { registrationAction } from './action'
-import { inputFields } from './inputFields'
-import { redirect } from 'next/navigation'
-import { sendOTP } from '../verify/actions/sendOTP'
+import { Spinner } from '@/components'
+import { signIn } from 'next-auth/react'
+import clsx from 'clsx'
+import { BsArrowLeftCircle } from 'react-icons/bs'
+import { forgotPassword } from './action'
+import { redirect, useRouter } from 'next/navigation'
+import { encrypt } from '@/utils/encrypt'
+import { useReCaptcha } from '@/hooks/useRecaptcha'
 
-const RegistrationPage = () => {
+const ForgotPasswordPage = () => {
   const {
     formState: { errors },
     register,
     handleSubmit
-  } = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  } = useForm<z.infer<typeof ForgotPasswordSchema>>({
+    resolver: zodResolver(ForgotPasswordSchema),
     defaultValues: {
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: ''
+      email: ''
     }
   })
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const { verifyReCaptcha } = useReCaptcha()
 
   const [result, setResult] = useState<AuthResponse>({
@@ -42,26 +40,40 @@ const RegistrationPage = () => {
     error: ''
   })
 
-  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (values: z.infer<typeof ForgotPasswordSchema>) => {
     startTransition(async () => {
-      setResult({
-        success: false,
-        message: '',
-        error: ''
-      })
-      const isVerified = await verifyReCaptcha('register')
+      const isVerified = await verifyReCaptcha('forgotPassword')
       if (isVerified) {
-        const result = await registrationAction(values)
+        const result = await forgotPassword(values)
         if (result) {
           setResult(result)
           if (result.success) {
             const token = await encrypt({
               email: values.email,
-              name: `${values.firstName} ${values.lastName}`,
-              scope: 'REGISTER'
+              scope: 'FORGOT_PASSWORD'
             })
             redirect(`/auth/verify?token=${encodeURIComponent(token)}`)
+          } else {
+            setResult({ success: false, error: 'Something went wrong!' })
           }
+        }
+      } else {
+        setResult({
+          success: false,
+          error:
+            'We’re sorry, but we couldn’t verify that you are a human. Please try again. If you continue to experience issues, please contact our support team for assistance.'
+        })
+      }
+      if (isVerified) {
+        const result = await forgotPassword(values)
+        setResult(result)
+        const key = await encrypt({
+          email: values.email,
+          scope: 'FORGOT_PASSWORD'
+        })
+        sessionStorage.setItem('key', key)
+        if (result.success) {
+          router.push(`/auth/verify-email`)
         }
       } else {
         setResult({
@@ -72,45 +84,41 @@ const RegistrationPage = () => {
       }
     })
   }
+  const inputFields: Array<{
+    id: number
+    name: keyof z.infer<typeof ForgotPasswordSchema>
+    placeholder: string
+    type: string
+  }> = [
+    {
+      id: 2,
+      name: 'email',
+      placeholder: 'Email',
+      type: 'text'
+    }
+  ]
 
   return (
     <div>
-      <h3 className="text-xl font-bold mb-8 text-center flex items-center justify-center gap-2">
-        Registration
+      <h3 className="text-xl font-bold mb-4 text-center flex items-center justify-center gap-2">
+        Forgot password ?
       </h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-5">
-          {inputFields.map(({ id, type, placeholder, name }) => {
+          {inputFields.map(({ id, placeholder, name }) => {
             return (
               <div key={id} className="relative">
                 <input
                   {...register(name)}
                   placeholder={placeholder}
-                  type={
-                    type === 'password'
-                      ? isPasswordVisible
-                        ? 'text'
-                        : 'password'
-                      : 'text'
-                  }
+                  type="text"
                   className={clsx(
                     'w-full border border-gray-100 text-sm p-4 focus:outline-none focus:ring-1 focus:ring-primary-500 rounded',
                     errors[name] &&
                       'outline outline-red-200 outline-1 focus:ring-red-300'
                   )}
                 />
-                {type === 'password' && (
-                  <div
-                    onClick={() => setIsPasswordVisible((prev) => !prev)}
-                    className="absolute right-4 top-1/2 translate-y-[-50%]"
-                  >
-                    {isPasswordVisible ? (
-                      <FiEye className="text-neutral-400 text-base" />
-                    ) : (
-                      <FiEyeOff className="text-neutral-400 text-base" />
-                    )}
-                  </div>
-                )}
+
                 <CSSTransition
                   in={Boolean(errors[name]?.message)}
                   timeout={200}
@@ -133,30 +141,20 @@ const RegistrationPage = () => {
             )
           })}
           <button
+            type="submit"
             disabled={isPending}
-            className="bg-green-500 disabled:bg-green-100 w-full h-11 flex items-center justify-center gap-2 py-2.5 text-neutral-600 text-base font-semibold bg-primary-400 rounded disabled:bg-primary-100 disabled:cursor-not-allowed"
+            className="w-full h-11 flex items-center justify-center gap-2 py-2.5 text-neutral-600 text-base font-semibold bg-primary-400 rounded disabled:bg-primary-100 disabled:cursor-not-allowed"
           >
-            {isPending ? <Spinner /> : 'Register'}
+            {isPending ? <Spinner /> : 'Send code'}
           </button>
-          <div className="text-xs text-neutral-500 tracking-wide">
-            By clicking on Register or signing in using a social login, you
-            agree to our{' '}
-            <Link className="text-blue-500" href="#">
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link className="text-blue-500" href="#">
-              Privacy Policy.
-            </Link>
-          </div>
 
-          {result.error && !isPending && (
+          {result?.error && (
             <div className="rounded bg-red-100 text-red-400 text-sm font-semibold px-4 py-3 flex items-center justify-between">
               <div>{result.error}</div>
               <div>{<BiErrorCircle />}</div>
             </div>
           )}
-          {result.success && !isPending && (
+          {result?.success && (
             <div className="rounded bg-green-100 text-green-400 text-sm font-semibold px-4 py-3 flex items-center justify-between">
               <div>{result.message}</div>
               <div>{<BiCheckCircle />}</div>
@@ -164,20 +162,26 @@ const RegistrationPage = () => {
           )}
         </div>
       </form>
+      <Link
+        className="text-blue-600 w-full my-12 mb-12 font-semibold text-sm text-center flex items-start gap-1 justify-center"
+        href="/auth/login"
+      >
+        <BsArrowLeftCircle />
+        <span className="translate-y-[-4px]"> Go back to login </span>
+      </Link>
 
       <div className="flex items-center gap-4 text-gray-300 my-4 text-sm">
         <div className="w-full border border-gray-100"></div>
         <span className="text-red-500 text-xs">or</span>
         <div className="w-full border border-gray-100"></div>
       </div>
-      <div className="text-xs mt-3 text-gray-400 font-semibold text-center">
-        Already have an account ?
-        <Link href="/auth/login" className="text-primary-500">
-          &nbsp;Login
-        </Link>
+      <div className="text-2xl flex items-center justify-center my-8 gap-4">
+        <button onClick={() => signIn('google')}>
+          <FcGoogle />
+        </button>
       </div>
     </div>
   )
 }
 
-export default RegistrationPage
+export default ForgotPasswordPage

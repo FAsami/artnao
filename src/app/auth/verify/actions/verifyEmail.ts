@@ -4,6 +4,7 @@ import { AuthResponse } from '@/types/auth'
 import bcrypt from 'bcryptjs'
 import { client } from '@/lib/prismaClient'
 import { VerifyEmailSchema } from '@/schema'
+import { signIn } from '@/auth'
 
 export const verifyEmail = async (
   values: z.infer<typeof VerifyEmailSchema>
@@ -17,56 +18,61 @@ export const verifyEmail = async (
   const { otp, email } = validatedFields.data
 
   try {
-    const result = await client.otp.findFirst({
-      where: {
-        email,
-        isValid: true
-      }
-    })
-    console.log(result)
+    // const result = await client.otp.findFirst({
+    //   where: {
+    //     email,
+    //     isValid: true
+    //   }
+    // })
 
-    if (!result || !result.token) {
-      return { success: false, error: 'Invalid OTP!' }
-    }
+    // if (!result || !result.token) {
+    //   return { success: false, error: 'Invalid OTP!' }
+    // }
 
-    if (result.expiredOn <= new Date()) {
-      return { success: false, error: 'OTP has expired!' }
-    }
+    // if (result.expiredOn <= new Date()) {
+    //   return { success: false, error: 'OTP has expired!' }
+    // }
 
-    const isMatched = await bcrypt.compare(otp, result.token)
+    // const isMatched = await bcrypt.compare(otp, result.token)
 
-    if (!isMatched) {
-      return { success: false, error: 'Invalid OTP!' }
-    }
+    // if (!isMatched) {
+    //   return { success: false, error: 'Invalid OTP!' }
+    // }
 
     try {
-      const user = await client.user.findFirst({
-        where: {
-          email
-        }
-      })
+      // const user = await client.user.findFirst({
+      //   where: {
+      //     email
+      //   }
+      // })
 
-      //verify email if not verified
-      if (!user?.emailVerified) {
-        await client.user.update({
-          where: {
-            email
-          },
-          data: {
-            emailVerified: new Date()
-          }
-        })
-      }
-      //Make all the OTP invalid for current user
-      await client.otp.deleteMany({
-        where: {
-          email: email
-        }
+      // //verify email if not verified
+      // if (!user?.emailVerified) {
+      //   await client.user.update({
+      //     where: {
+      //       email
+      //     },
+      //     data: {
+      //       emailVerified: new Date()
+      //     }
+      //   })
+      // }
+      // //Make all the OTP invalid for current user
+      // await client.otp.deleteMany({
+      //   where: {
+      //     email: email
+      //   }
+      // })
+      await signIn('email_otp', {
+        email,
+        otp,
+        redirect: false
       })
 
       return { success: true, message: 'OTP validated successfully' }
     } catch (error) {
-      return { success: false, message: 'Something went wrong !' }
+      console.log(error)
+      return { success: false, error: 'Something went wrong !' }
     }
   } catch (error) {
     return { success: false, error: 'Something went wrong!' }

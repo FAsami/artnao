@@ -6,6 +6,7 @@ import * as z from 'zod'
 import bcrypt from 'bcryptjs'
 import { client } from '@/lib/prismaClient'
 import { signIn } from '@/auth'
+import { sendOTP } from '@/utils/sendOTP'
 
 const registrationAction = async (
   values: z.infer<typeof RegisterSchema>
@@ -41,6 +42,10 @@ const registrationAction = async (
       email,
       password,
       redirect: false
+    })
+    await sendOTP({
+      name: `${values.firstName} ${values.lastName}`,
+      email: values.email
     })
     return { success: true, message: 'Registered' }
   } catch (error) {
