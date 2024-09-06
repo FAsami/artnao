@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_artnao
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: artnao
+    ports:
+      - '5471:5432'
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
