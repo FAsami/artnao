@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   FaFacebook,
@@ -8,126 +8,110 @@ import {
   FaPhone,
   FaEnvelope,
   FaMoneyCheckAlt,
-  FaMapMarkedAlt,
-  FaRss,
-  FaSitemap
+  FaMapMarkedAlt
 } from 'react-icons/fa'
 import { MdOutlineGavel, MdPrivacyTip } from 'react-icons/md'
+import { SocialLink, FooterSection } from '@/types/footer'
+
+const social: SocialLink[] = [
+  { href: 'https://www.facebook.com', icon: FaFacebook, label: 'Facebook' },
+  { href: 'https://www.twitter.com', icon: FaTwitter, label: 'Twitter' },
+  { href: 'https://www.instagram.com', icon: FaInstagram, label: 'Instagram' },
+  { href: 'https://www.linkedin.com', icon: FaLinkedin, label: 'LinkedIn' }
+]
+
+const data: { [key: string]: FooterSection } = {
+  contact: {
+    header: 'Contact Us',
+    links: [
+      { icon: FaMapMarkedAlt, text: '221B Baker Street, London.' },
+      { icon: FaPhone, text: '+88 01291222' },
+      {
+        icon: FaEnvelope,
+        text: 'info@foysal.dev',
+        href: 'mailto:info@foysal.dev'
+      }
+    ]
+  },
+  important: {
+    header: 'Important Links',
+    links: [
+      { href: '/artists', text: 'Artists' },
+      { href: '/arts', text: 'Arts' },
+      { href: '/about-us', text: 'About Us' },
+      { href: '/contact', text: 'Contact' }
+    ]
+  },
+  policy: {
+    header: 'Policy',
+    links: [
+      { href: '/terms', icon: MdOutlineGavel, text: 'Terms and Conditions' },
+      { href: '/privacy-policy', icon: MdPrivacyTip, text: 'Privacy Policy' },
+      { href: '/refund-policy', icon: FaMoneyCheckAlt, text: 'Refund Policy' }
+    ]
+  }
+}
 
 const Footer = () => {
   return (
-    <footer className="bg-amber-300 pt-10 border-t-4 border-t-slate-300">
+    <footer className="pt-10 border-t">
       <div className="max-w-screen-xl mx-auto px-3 py-6">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-            <Link href="/">
-              <div
-                className={clsx('w-fit flex h-full items-center text-4xl mb-4')}
-              >
-                <span className="text-white font-normal font-secondary">
-                  art
-                </span>
-                <span className="text-gray-700 font-secondary">nao</span>
-              </div>
-            </Link>
+            <div className="flex items-center mb-6">
+              <Link href="/">
+                <div className="h-12 flex items-center">
+                  <Image
+                    src="/logo-full.png"
+                    alt="Logo"
+                    width={300}
+                    height={80}
+                    className="h-full w-auto"
+                  />
+                </div>
+              </Link>
+            </div>
             <div className="flex space-x-4">
-              <Link href="https://www.facebook.com" aria-label="Facebook">
-                <FaFacebook
-                  className="text-gray-700 hover:text-white"
-                  size={24}
-                />
-              </Link>
-              <Link href="https://www.twitter.com" aria-label="Twitter">
-                <FaTwitter
-                  className="text-gray-700 hover:text-white"
-                  size={24}
-                />
-              </Link>
-              <Link href="https://www.instagram.com" aria-label="Instagram">
-                <FaInstagram
-                  className="text-gray-700 hover:text-white"
-                  size={24}
-                />
-              </Link>
-              <Link href="https://www.linkedin.com" aria-label="LinkedIn">
-                <FaLinkedin
-                  className="text-gray-700 hover:text-white"
-                  size={24}
-                />
-              </Link>
+              {social.map(({ href, icon: Icon, label }) => (
+                <Link key={label} href={href} aria-label={label}>
+                  <Icon className="text-gray-700 hover:text-white" size={24} />
+                </Link>
+              ))}
             </div>
           </div>
-          <div className="flex flex-col items-center md:items-start">
-            <h2 className="text-gray-700 text-lg font-semibold mb-2">
-              Contact Us
-            </h2>
-            <div className="flex items-center text-gray-700 hover:text-white mt-2">
-              <FaMapMarkedAlt size={20} />
-              <span className="ml-1">221B Baker Street, London.</span>
+          {Object.entries(data).map(([key, { header, links }]) => (
+            <div
+              key={key}
+              className="flex flex-col items-center md:items-start mb-6 md:mb-0"
+            >
+              <h2 className="text-gray-700 text-base font-semibold mb-5">
+                {header}
+              </h2>
+              <div className="space-y-3">
+                {links.map(({ href, icon: Icon, text }) => (
+                  <div
+                    key={text || href}
+                    className="flex items-center text-gray-700 space-x-2"
+                  >
+                    {Icon && <Icon size={14} />}
+                    {href ? (
+                      <Link
+                        href={href}
+                        className="ml-1 text-sm hover:text-primary-500 transition-all hover:border-b hover:border-b-primary-500"
+                      >
+                        {text}
+                      </Link>
+                    ) : (
+                      <span className="ml-1 text-sm">{text}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center text-gray-700 hover:text-white mt-2">
-              <FaPhone size={20} />
-              <span className="ml-1">+88 01291222</span>
-            </div>
-            <div className="flex items-center text-gray-700 hover:text-white mt-2">
-              <FaEnvelope size={20} />
-              <span className="ml-1">info@foysal.dev</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-            <h2 className="text-gray-700 text-lg font-semibold mb-2">
-              Important links
-            </h2>
-            <Link
-              href="/artists"
-              className="text-gray-700 hover:text-white mt-2"
-            >
-              Artists
-            </Link>
-            <Link href="/arts" className="text-gray-700 hover:text-white mt-2">
-              Arts
-            </Link>
-            <Link
-              href="/about-us"
-              className="text-gray-700 hover:text-white mt-2"
-            >
-              About Us
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-700 hover:text-white mt-2"
-            >
-              Contact
-            </Link>
-          </div>
-          <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-            <h2 className="text-gray-700 text-lg font-semibold mb-2">Policy</h2>
-            <Link
-              href="/terms"
-              className="flex items-center text-gray-700 hover:text-white mt-2"
-            >
-              <MdOutlineGavel size={20} />
-              <span className="ml-1">Terms and Conditions</span>
-            </Link>
-            <Link
-              href="/privacy-policy"
-              className="flex items-center text-gray-700 hover:text-white mt-2"
-            >
-              <MdPrivacyTip size={20} />
-              <span className="ml-1">Privacy Policy</span>
-            </Link>
-            <Link
-              href="/refund-policy"
-              className="flex items-center text-gray-700 hover:text-white mt-2"
-            >
-              <FaMoneyCheckAlt size={20} />
-              <span className="ml-1">Refund Policy</span>
-            </Link>
-          </div>
+          ))}
         </div>
       </div>
-      <div className="text-center text-sm text-gray-700 border-t border-t-amber-400 py-4">
+      <div className="text-center text-sm text-gray-700 border-t py-4">
         copyright &copy;2024{' '}
         <Link href="https://www.foysal.dev/">foysal.dev</Link>
       </div>
