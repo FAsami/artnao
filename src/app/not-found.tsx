@@ -1,7 +1,9 @@
+import { auth } from '@/auth'
 import { Header } from '@/components'
 import Link from 'next/link'
 
-const NotFound = () => {
+const NotFound = async () => {
+  const session = await auth()
   return (
     <div>
       <Header />
@@ -16,7 +18,7 @@ const NotFound = () => {
           <div className="text-base">The page you requested not found. :)</div>
 
           <Link
-            href="/"
+            href={session?.user?.role === 'ADMIN' ? '/admin' : '/'}
             className="text-secondary-500 border-b border-b-secondary-500"
           >
             Go back to home
