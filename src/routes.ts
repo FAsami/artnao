@@ -9,7 +9,7 @@ interface Routes {
 const routes: Routes = {
   AUTH: ['/auth/login', '/auth/registration', '/auth/error'],
   USER: ['/dashboard/user/*'],
-  ADMIN: ['/dashboard/admin/*']
+  ADMIN: ['/admin/*']
 }
 
 export { routes }
