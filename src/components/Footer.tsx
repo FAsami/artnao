@@ -111,9 +111,14 @@ const Footer = () => {
           ))}
         </div>
       </div>
-      <div className="text-center text-sm text-gray-700 border-t py-4">
-        copyright &copy;2024{' '}
-        <Link href="https://www.foysal.dev/">foysal.dev</Link>
+      <div className="text-center text-sm text-gray-700 border-t py-4 ">
+        Copyright &copy;{new Date().getFullYear()}{' '}
+        <Link
+          href="https://www.foysal.dev/"
+          className="text-primary-500 border-b border-b-primary-500 font-semibold"
+        >
+          foysal.dev
+        </Link>
       </div>
     </footer>
   )

@@ -1,3 +1,4 @@
+'use client'
 import type { FC } from 'react'
 import { LoadingOutlined, BellOutlined } from '@ant-design/icons'
 import { Avatar, Badge, List, Popover, Spin, Tabs, Tag, Tooltip } from 'antd'
@@ -98,8 +99,12 @@ const Notification: FC = () => {
       }}
     >
       <Tooltip title="Notifications">
-        <Badge count={noticeCount} overflowCount={999}>
-          <BellOutlined className="text-xl" />
+        <Badge
+          className="cursor-pointer"
+          count={noticeCount}
+          overflowCount={999}
+        >
+          <BellOutlined className="text-2xl" />
         </Badge>
       </Tooltip>
     </Popover>

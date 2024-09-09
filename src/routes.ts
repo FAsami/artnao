@@ -8,7 +8,7 @@ interface Routes {
 
 const routes: Routes = {
   AUTH: ['/auth/login', '/auth/registration', '/auth/error'],
-  USER: ['/dashboard/user/*'],
+  USER: ['/account/'],
   ADMIN: ['/admin/*']
 }
 
