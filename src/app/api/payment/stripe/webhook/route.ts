@@ -1,5 +1,3 @@
-// app/api/webhooks/stripe/route.ts
-
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { client } from '@/lib/prismaClient'
@@ -8,11 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-06-20'
 })
 
-export const config = {
-  api: {
-    bodyParser: false
-  }
-}
+export const runtime = 'edge'
 
 export async function POST(req: Request) {
   const sig = req.headers.get('stripe-signature')
@@ -55,7 +49,6 @@ export async function POST(req: Request) {
 
     case 'payment_intent.payment_failed': {
       const paymentIntent = event.data.object as Stripe.PaymentIntent
-
       try {
         await client.transaction.create({
           data: {
@@ -72,7 +65,6 @@ export async function POST(req: Request) {
       break
     }
 
-    // Add more event types if needed
     default:
       console.log(`Unhandled event type ${event.type}`)
   }

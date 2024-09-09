@@ -15,7 +15,7 @@ export async function POST(req: Request) {
       currency,
       receipt_email: customerEmail
     })
-    await client.payment.create({
+    await client.payment_Intent.create({
       data: {
         paymentIntentId: paymentIntent.id,
         amount: paymentIntent.amount,
