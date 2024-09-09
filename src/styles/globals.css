@@ -19,9 +19,8 @@
   }
 }
 
-/* .dark .ant-layout-header {
-  background-color: #001529;
+.artnao-tabs {
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
 }
-.dark .ant-layout-sider {
-  background-color: #001529;
-} */

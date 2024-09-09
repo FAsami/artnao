@@ -1,8 +1,11 @@
 'use client'
-import { Layout, Breadcrumb } from 'antd'
+import { Layout } from 'antd'
 import { ReactNode } from 'react'
 import AdminSidebar from './components/Sidebar'
 import { AdminHeader } from './components'
+import { TabProvider } from '@/providers/Tab'
+import AdminTabs from './components/AdminTabs'
+
 const { Content } = Layout
 
 interface AdminLayoutProps {
@@ -11,19 +14,17 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
-    <Layout className="!min-h-screen">
-      <AdminSidebar />
-      <Layout>
-        <AdminHeader />
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Admin</Breadcrumb.Item>
-            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-          </Breadcrumb>
-          <div>{children}</div>
-        </Content>
+    <TabProvider>
+      <Layout style={{ minHeight: '100vh' }}>
+        <AdminSidebar />
+        <Layout>
+          <AdminHeader />
+          <Content className="m-2">
+            <AdminTabs>{children}</AdminTabs>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    </TabProvider>
   )
 }
 
