@@ -22,7 +22,7 @@ const menuItems = [
     key: '2',
     icon: <MdOutlineDraw />,
     title: 'Artworks',
-    path: '/admin/artworks'
+    path: '/admin/artworks/templates'
   },
   {
     key: 'sub1',

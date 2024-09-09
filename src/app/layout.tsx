@@ -20,14 +20,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <AntdRegistry>
-      <ConfigProvider theme={theme}>
-        <ReCaptchaProvider>
-          <html lang="en">
-            <body className={inter.className}>{children}</body>
-          </html>
-        </ReCaptchaProvider>
-      </ConfigProvider>
-    </AntdRegistry>
+    <ConfigProvider theme={theme}>
+      <ReCaptchaProvider>
+        <html lang="en">
+          <body className={inter.className}>
+            <AntdRegistry> {children}</AntdRegistry>
+          </body>
+        </html>
+      </ReCaptchaProvider>
+    </ConfigProvider>
   )
 }
