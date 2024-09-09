@@ -64,15 +64,17 @@ export const TabProvider: React.FC<{ children: ReactNode }> = ({
             ? tabs[tabs.length - 1].path
             : ''
           : prevState.activeTabId
+      console.log(activeTabId)
+
       return {
         ...prevState,
         tabs,
         activeTabId
       }
     })
+
     router.push(tabs.activeTabId)
   }
-
   const removeAllTabs = () => {
     setTabs((prevState) => ({
       ...prevState,
