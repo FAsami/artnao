@@ -4,10 +4,11 @@ import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { logout } from '@/actions/logout'
 import Notification from './Notification'
+const { Header } = Layout
 
 const AdminHeader = () => {
   return (
-    <Layout.Header
+    <Header
       className="flex items-center justify-end"
       style={{ backgroundColor: '#fff' }}
     >
@@ -38,7 +39,7 @@ const AdminHeader = () => {
           </Avatar>
         </Dropdown>
       </div>
-    </Layout.Header>
+    </Header>
   )
 }
 export { AdminHeader }

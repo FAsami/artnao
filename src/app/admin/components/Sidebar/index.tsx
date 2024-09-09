@@ -123,4 +123,4 @@ const AdminSidebar = () => {
   )
 }
 
-export default AdminSidebar
+export { AdminSidebar }

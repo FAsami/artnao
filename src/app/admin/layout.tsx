@@ -1,10 +1,9 @@
 'use client'
 import { Layout } from 'antd'
 import { ReactNode } from 'react'
-import AdminSidebar from './components/Sidebar'
-import { AdminHeader } from './components'
 import { TabProvider } from '@/providers/Tab'
-import AdminTabs from './components/AdminTabs'
+import AdminTabs from './components/Header/AdminTabs'
+import { AdminSidebar, AdminHeader } from './components'
 
 const { Content } = Layout
 
