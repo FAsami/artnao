@@ -24,3 +24,11 @@
   background-color: #fff;
   border-radius: 8px;
 }
+:root {
+  --header-height: 3.5rem;
+}
+@media (min-width: 768px) {
+  :root {
+    --header-height: 4.5rem;
+  }
+}

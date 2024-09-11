@@ -7,6 +7,7 @@ import 'animate.css'
 import '../styles/globals.css'
 
 import { Inter } from 'next/font/google'
+import clsx from 'clsx'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({
     <ConfigProvider theme={theme}>
       <ReCaptchaProvider>
         <html lang="en">
-          <body className={inter.className}>
+          <body className={clsx(inter.className, 'overflow-hidden')}>
             <AntdRegistry> {children}</AntdRegistry>
           </body>
         </html>
