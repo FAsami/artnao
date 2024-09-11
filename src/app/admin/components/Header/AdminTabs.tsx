@@ -34,6 +34,9 @@ const AdminTabs = ({ children }: { children: React.ReactNode }) => {
       hideAdd
       items={tabItems}
       rootClassName="artnao-tabs"
+      style={{
+        padding: '4px'
+      }}
     />
   )
 }
