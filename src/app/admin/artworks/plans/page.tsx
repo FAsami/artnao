@@ -118,13 +118,13 @@ const columns: ColumnType<Template>[] = [
     )
   },
   {
-    title: 'Created At',
+    title: 'Created',
     dataIndex: 'createdAt',
     key: 'createdAt',
     render: (text: Date) => dayjs(text).format('YYYY-MM-DD')
   },
   {
-    title: 'Updated At',
+    title: 'Last updated',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
     render: (text: Date) => dayjs(text).format('YYYY-MM-DD')

@@ -4,7 +4,7 @@ import { PieChartOutlined, FileOutlined, UserOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MdOutlineDraw } from 'react-icons/md'
+import { MdBorderAll, MdOutlineDraw } from 'react-icons/md'
 import { useTabs } from '@/providers/Tab'
 import { usePathname } from 'next/navigation'
 
@@ -19,24 +19,30 @@ const menuItems = [
     path: '/admin'
   },
   {
-    key: '2',
-    icon: <MdOutlineDraw />,
-    title: 'Artworks',
-    path: '/admin/artworks/templates'
+    key: 'order',
+    icon: <MdBorderAll />,
+    title: 'Orders',
+    path: '/admin/orders'
   },
   {
-    key: 'sub1',
-    icon: <UserOutlined />,
-    title: 'Users',
+    key: 'artworks',
+    icon: <MdOutlineDraw />,
+    title: 'Artworks',
     subItems: [
-      { key: '3', title: 'All Users', path: '/admin/users' },
-      { key: '4', title: 'Add User', path: '/admin/users/add' }
+      { key: '3', title: 'Templates', path: '/admin/artworks/templates' },
+      { key: '5', title: 'Events', path: '/admin/artworks/events' },
+      { key: '4', title: 'Demos', path: '/admin/artworks/demos' },
+      { key: '10', title: 'Plans', path: '/admin/artworks/plans' }
     ]
   },
   {
-    key: '9',
-    icon: <FileOutlined />,
-    title: 'Files'
+    key: 'crm',
+    icon: <UserOutlined />,
+    title: 'Customers',
+    subItems: [
+      { key: '8', title: 'Customers', path: '/admin/crm/customers' },
+      { key: '9', title: 'Coupons', path: '/admin/crm/coupons' }
+    ]
   }
 ]
 
@@ -87,6 +93,7 @@ const AdminSidebar = () => {
         theme="light"
         defaultSelectedKeys={getDefaultSelectedKeys()}
         mode="inline"
+        defaultOpenKeys={['artworks', 'crm']}
       >
         {menuItems.map((item) =>
           item.subItems ? (
