@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { MdBorderAll, MdOutlineDraw } from 'react-icons/md'
 import { useTabs } from '@/providers/Tab'
 import { usePathname } from 'next/navigation'
+import { getTabTitle } from '@/utils/getTabTitle'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -101,7 +102,13 @@ const AdminSidebar = () => {
               {item.subItems.map((subItem) => (
                 <Menu.Item
                   key={subItem.key}
-                  onClick={() => subItem.path && addTab({ path: subItem.path })}
+                  onClick={() =>
+                    subItem.path &&
+                    addTab({
+                      path: subItem.path,
+                      title: getTabTitle(subItem.path)
+                    })
+                  }
                 >
                   {subItem.path ? (
                     <Link href={subItem.path}>{subItem.title}</Link>
@@ -115,7 +122,10 @@ const AdminSidebar = () => {
             <Menu.Item
               key={item.key}
               icon={item.icon}
-              onClick={() => item.path && addTab({ path: item.path })}
+              onClick={() =>
+                item.path &&
+                addTab({ path: item.path, title: getTabTitle(item.path) })
+              }
             >
               {item.path ? (
                 <Link href={item.path}>{item.title}</Link>

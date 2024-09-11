@@ -6,9 +6,11 @@ import {
   useEffect
 } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
+import { getTabTitle } from '@/utils/getTabTitle'
 
 interface TabItem {
   path: string
+  title: string
 }
 
 interface TabsState {
@@ -33,8 +35,11 @@ export const TabProvider: React.FC<{ children: ReactNode }> = ({
   const pathname = usePathname()
   const initial =
     pathname === '/admin'
-      ? [{ path: '/admin' }]
-      : [{ path: '/admin' }, { path: pathname }]
+      ? [{ path: '/admin', title: getTabTitle('/admin') }]
+      : [
+          { path: '/admin', title: getTabTitle('/admin') },
+          { path: pathname, title: getTabTitle(pathname) }
+        ]
 
   const [tabs, setTabs] = useState<TabsState>({
     activeTabId: pathname,

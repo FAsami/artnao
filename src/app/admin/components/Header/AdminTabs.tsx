@@ -2,6 +2,7 @@
 import React from 'react'
 import { Tabs } from 'antd'
 import { useTabs } from '@/providers/Tab'
+import { getTabTitle } from '@/utils/getTabTitle'
 
 const AdminTabs = ({ children }: { children: React.ReactNode }) => {
   const { tabs, removeTab, addTab } = useTabs()
@@ -17,7 +18,7 @@ const AdminTabs = ({ children }: { children: React.ReactNode }) => {
   }
 
   const tabItems = tabs.tabs.map((tab) => ({
-    label: tab.path,
+    label: tab.title,
     key: tab.path,
     closable: tab.path !== '/admin',
     children: (
@@ -29,7 +30,10 @@ const AdminTabs = ({ children }: { children: React.ReactNode }) => {
     <Tabs
       type="editable-card"
       activeKey={tabs.activeTabId}
-      onChange={(key) => addTab({ path: key })}
+      onChange={(key) => {
+        console.log('==>', key)
+        addTab({ path: key, title: getTabTitle(key) })
+      }}
       onEdit={handleTabEdit}
       hideAdd
       items={tabItems}
