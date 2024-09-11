@@ -3,7 +3,6 @@ const mapsTabTitle: Record<string, string> = {
 }
 
 const getTabTitle = (path: string): string => {
-  console.log(path)
   if (mapsTabTitle[path]) {
     return mapsTabTitle[path]
   }
