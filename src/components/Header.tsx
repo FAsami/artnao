@@ -5,8 +5,7 @@ import { BsCart3 } from 'react-icons/bs'
 import { logout } from '@/actions/logout'
 import Image from 'next/image'
 import { Avatar, Badge, Dropdown, Tooltip } from 'antd'
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
-import { BiSolidLogOut } from 'react-icons/bi'
+import { UserOutlined } from '@ant-design/icons'
 import { IoMdLogOut } from 'react-icons/io'
 import Notification from '@/app/admin/components/Header/Notification'
 
@@ -69,12 +68,6 @@ const Header = async () => {
               )
             })}
             <div className="flex items-center gap-6 ml-16">
-              {/* <div className="relative">
-                <BsCart3 className="text-primary-500 text-2xl" />
-                <div className="flex items-center justify-center absolute -top-1 -right-1 h-4 w-4 bg-tertiary-500 rounded-full text-[10px] text-white font-semibold p-1">
-                  10
-                </div>
-              </div> */}
               <Tooltip title="Notifications">
                 <Badge
                   className="cursor-pointer"
@@ -120,7 +113,12 @@ const Header = async () => {
                     </Avatar>
                   </Dropdown>
                 ) : (
-                  <Link href="/auth/login">Login</Link>
+                  <Link
+                    className="bg-tertiary-500  transition-all text-white rounded-sm flex items-center gap- justify-center px-3 py-2 text-sm uppercase hover:bg-secondary-500"
+                    href="/auth/login"
+                  >
+                    Sign up
+                  </Link>
                 )}
               </div>
             </div>
