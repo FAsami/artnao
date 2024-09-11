@@ -21,9 +21,7 @@ const AdminTabs = ({ children }: { children: React.ReactNode }) => {
     label: tab.title,
     key: tab.path,
     closable: tab.path !== '/admin',
-    children: (
-      <div className="bg-white min-h-[] w-full rounded-md">{children}</div>
-    )
+    children: <div className="bg-white w-full rounded-md px-2">{children}</div>
   }))
 
   return (
