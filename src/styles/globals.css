@@ -32,3 +32,14 @@
     --header-height: 4.5rem;
   }
 }
+
+.ant-form-item-label {
+  padding-bottom: 0.25rem !important;
+}
+.ant-form-item-label label {
+  font-size: 12px !important;
+  color: #414141 !important;
+}
+.ant-form-item-explain-error {
+  font-size: 12px !important;
+}

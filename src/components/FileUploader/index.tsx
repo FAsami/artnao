@@ -11,10 +11,14 @@ import { shortenFileName } from '@/utils/shortenFileName'
 
 const { Dragger } = Upload
 
-const FileUploader = () => {
+interface FileUploaderProps {
+  onUploadComplete?: (assets: UploadFile[]) => void
+}
+
+const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
   const [loading, setLoading] = useState(false)
   const [fileList, setFileList] = useState<UploadFile[]>([])
-  const [uploadedFiles, setUploadedFiles] = useState<UploadFile[]>([])
+  const [assets, setAssets] = useState<UploadFile[]>([])
 
   const getSignature = async () => {
     try {
@@ -51,26 +55,21 @@ const FileUploader = () => {
       message.success('Upload successful!')
       const uniqueUid = `${file.uid}-${new Date().getTime()}`
 
-      setUploadedFiles((prev) => [
-        ...prev,
-        {
-          uid: uniqueUid,
-          name: file.name,
-          status: 'done',
-          url: response.data.secure_url,
-          type: file.type
-        }
-      ])
-      setFileList((prev) => [
-        ...prev,
-        {
-          uid: uniqueUid,
-          name: file.name,
-          status: 'done',
-          url: response.data.secure_url,
-          type: file.type
-        }
-      ])
+      const newAsset: UploadFile = {
+        uid: uniqueUid,
+        name: file.name,
+        status: 'done',
+        url: response.data.secure_url,
+        type: file.type
+      }
+
+      const updatedAssets = [...assets, newAsset]
+      setAssets(updatedAssets)
+      setFileList(updatedAssets)
+
+      if (onUploadComplete) {
+        onUploadComplete(updatedAssets)
+      }
     } catch (error) {
       message.error('Upload failed.')
       console.error('Upload error:', error)
@@ -81,6 +80,16 @@ const FileUploader = () => {
 
   const handleChange: UploadProps['onChange'] = ({ fileList }) => {
     setFileList(fileList)
+  }
+
+  const handleRemove = (uid: string) => {
+    const updatedAssets = assets.filter((file) => file.uid !== uid)
+    setAssets(updatedAssets)
+    setFileList(updatedAssets)
+
+    if (onUploadComplete) {
+      onUploadComplete(updatedAssets)
+    }
   }
 
   return (
@@ -106,8 +115,8 @@ const FileUploader = () => {
           {loading ? 'Uploading...' : 'Upload'}
         </Button>
       </Dragger>
-      <div className="flex items-center gap-6 flex-wrap my-6">
-        {uploadedFiles.map((node) => {
+      <div className="flex items-center flex-wra mt-6">
+        {assets.map((node) => {
           if (!node.url) return null
           return (
             <div key={node.uid} className="relative">
@@ -135,7 +144,11 @@ const FileUploader = () => {
                 </div>
               </div>
 
-              <button className="z-50 absolute -top-3 -right-3 bg-neutral-100 drop-shadow-sm h-4 w-4 flex justify-center items-center rounded-full">
+              <button
+                type="button"
+                className="z-50 absolute -top-3 -right-3 bg-neutral-100 drop-shadow-sm h-4 w-4 flex justify-center items-center rounded-full"
+                onClick={() => handleRemove(node.uid)}
+              >
                 <IoMdClose className="text-red-400" />
               </button>
             </div>
