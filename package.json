@@ -15,6 +15,7 @@
     "@ant-design/nextjs-registry": "^1.0.0",
     "@auth/prisma-adapter": "^2.2.0",
     "@hookform/resolvers": "^3.6.0",
+    "@lottiefiles/dotlottie-react": "^0.9.3",
     "@prisma/client": "^5.16.2",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.4.0",
