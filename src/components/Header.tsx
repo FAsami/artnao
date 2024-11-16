@@ -22,11 +22,11 @@ const Header = async () => {
   const session: Session | null = await auth()
 
   return (
-    <header className="h-[var(--header-height)]  w-screen z-50 bg-white relative shadow-sm">
+    <header className="h-[var(--header-height)]  w-screen z-50 relative">
       <div className="max-w-screen-xl px-3 mx-auto flex items-center justify-between h-full">
         <div className="flex items-center">
           <Link href="/">
-            <div className="hidden md:flex h-12 items-center">
+            <div className="hidden md:flex h-10 items-center">
               <Image
                 src="/logo-full.png"
                 alt="Logo"
@@ -68,7 +68,7 @@ const Header = async () => {
                   label: (
                     <Link
                       className={clsx(
-                        'cursor-pointer text-sm relative z-10 h-full flex items-center px-3 hover:border-b hover:border-b-primary-500 transition-all'
+                        'cursor-pointer text-sm relative z-10 h-full flex items-center px-3 hover:border-b hover:border-b-brand-primary-500 transition-all'
                       )}
                       href={node.url}
                     >
@@ -97,7 +97,7 @@ const NavigationMenu = () => {
           <Link
             key={id}
             className={clsx(
-              'cursor-pointer text-sm relative z-10 h-full flex items-center px-3 hover:border-b hover:border-b-primary-500 transition-all'
+              'cursor-pointer relative z-10 h-full flex items-center px-3 hover:border-b hover:border-b-brand-primary-500 transition-all'
             )}
             href={url}
           >
@@ -150,10 +150,10 @@ const AuthMenu = ({ session }: AuthMenuProps) => {
         </Dropdown>
       ) : (
         <Link
-          className="border md:border bg-transparent md:bg-neutral-100  transition-all text-tertiary-500 rounded-sm flex items-center  justify-center px-4 py-1.5 md:py-2.5 md:text-sm hover:bg-neutral-100 active:bg-primary-500 active:text-white"
+          className="border md:border-brand-primary-500 text-brand-primary-700  transition-all rounded-full flex items-center  justify-center px-4 py-1.5 md:text-base text-sm hover:bg-brand-primary-100 active:bg-brand-primary-500 active:text-white"
           href="/auth/login"
         >
-          Login
+          Sign up
         </Link>
       )}
     </div>

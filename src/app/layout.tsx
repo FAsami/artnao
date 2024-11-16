@@ -5,10 +5,8 @@ import { ConfigProvider } from 'antd'
 import { theme } from '@/theme/antd'
 import 'animate.css'
 import '../styles/globals.css'
-
-import { Inter } from 'next/font/google'
 import clsx from 'clsx'
-const inter = Inter({ subsets: ['latin'] })
+import { font } from '@/assets/font'
 
 export const metadata: Metadata = {
   title: 'Artnao',
@@ -24,7 +22,9 @@ export default function RootLayout({
     <ConfigProvider theme={theme}>
       <ReCaptchaProvider>
         <html lang="en">
-          <body className={clsx(inter.className, 'overflow-hidden')}>
+          <body
+            className={clsx(font.className, font.variable, 'overflow-hidden')}
+          >
             <AntdRegistry> {children}</AntdRegistry>
           </body>
         </html>

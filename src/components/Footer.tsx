@@ -54,7 +54,7 @@ const data: { [key: string]: FooterSection } = {
 
 const Footer = () => {
   return (
-    <footer className="pt-10 border-t">
+    <footer className="pt-10">
       <div className="max-w-screen-xl mx-auto px-3 py-6">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
@@ -97,7 +97,7 @@ const Footer = () => {
                     {href ? (
                       <Link
                         href={href}
-                        className="ml-1 text-sm hover:text-primary-500 transition-all hover:border-b hover:border-b-primary-500"
+                        className="ml-1 text-sm hover:text-brand-primary-500 transition-all hover:border-b hover:border-b-brand-primary-500"
                       >
                         {text}
                       </Link>
@@ -115,7 +115,7 @@ const Footer = () => {
         Copyright &copy;{new Date().getFullYear()}{' '}
         <Link
           href="https://www.foysal.dev/"
-          className="text-primary-500 border-b border-b-primary-500 font-semibold"
+          className="text-brand-primary-500 border-b border-b-brand-primary-500 font-semibold"
         >
           foysal.dev
         </Link>

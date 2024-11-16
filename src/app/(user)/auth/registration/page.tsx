@@ -93,7 +93,7 @@ const RegistrationPage = () => {
                       : 'text'
                   }
                   className={clsx(
-                    'w-full border border-gray-100 text-sm p-4 focus:outline-none focus:ring-1 focus:ring-primary-500 rounded',
+                    'w-full border border-gray-100 text-sm p-4 focus:outline-none focus:ring-1 focus:ring-brand-primary-500 rounded',
                     errors[name] &&
                       'outline outline-red-200 outline-1 focus:ring-red-300'
                   )}
@@ -171,7 +171,7 @@ const RegistrationPage = () => {
       </div>
       <div className="text-xs mt-3 text-gray-400 font-semibold text-center">
         Already have an account ?
-        <Link href="/auth/login" className="text-primary-500">
+        <Link href="/auth/login" className="text-brand-primary-500">
           &nbsp;Login
         </Link>
       </div>

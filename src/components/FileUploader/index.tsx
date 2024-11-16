@@ -139,7 +139,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
                 </a>
               )}
               <div className="overflow-x-hidden" title={node.name}>
-                <div className="text-xs px-1 text-primary-500 leading-tight">
+                <div className="text-xs px-1 text-brand-primary-500 leading-tight">
                   {shortenFileName(node.name)}
                 </div>
               </div>

@@ -59,7 +59,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ control, name, length = 6 }) => {
         <input
           key={index}
           type="text"
-          className="w-full h-14 text-center text-lg border rounded focus-visible:outline focus-visible:outline-primary-500"
+          className="w-full h-14 text-center text-lg border rounded focus-visible:outline focus-visible:outline-brand-primary-500"
           maxLength={1}
           ref={(el) => {
             inputsRef.current[index] = el

@@ -94,7 +94,7 @@ const ForgotPasswordPage = () => {
                   placeholder={placeholder}
                   type="text"
                   className={clsx(
-                    'w-full border border-gray-100 text-sm p-4 focus:outline-none focus:ring-1 focus:ring-primary-500 rounded',
+                    'w-full border border-gray-100 text-sm p-4 focus:outline-none focus:ring-1 focus:ring-brand-primary-500 rounded',
                     errors[name] &&
                       'outline outline-red-200 outline-1 focus:ring-red-300'
                   )}
