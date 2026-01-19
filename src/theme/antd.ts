@@ -2,11 +2,24 @@ import type { ThemeConfig } from 'antd'
 
 const theme: ThemeConfig = {
   token: {
-    colorPrimary: '#fbbf24'
+    colorPrimary: '#49479c',
+    borderRadius: 3
   },
   components: {
-    Collapse: {
-      headerBg: '#fff'
+    Input: {
+      controlHeight: 44
+    },
+    InputNumber: {
+      controlHeight: 44
+    },
+    Select: {
+      controlHeight: 44
+    },
+    DatePicker: {
+      controlHeight: 44
+    },
+    Radio: {
+      controlHeight: 44
     }
   }
 }

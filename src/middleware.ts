@@ -1,28 +1,31 @@
-import { auth } from './auth'
+import { auth } from '@/auth'
+import { routes } from '@/routes'
 
-export default auth((req) => {
-  // api auth route handlers
+export default auth(async (req) => {
+  const { AUTH, ADMIN, USER } = routes
+
   if (req.nextUrl.pathname.startsWith('/api/auth')) {
     return
-  }
-
-  if (req.auth) {
-    // if (
-    //   authRoutes.includes(req.nextUrl.pathname) &&
-    //   !req.auth.user.emailVerified
-    // ) {
-    //   return Response.redirect(new URL('/auth/verify-email', req.nextUrl))
-    // }
-    if (authRoutes.includes(req.nextUrl.pathname)) {
-      return Response.redirect(new URL('/', req.nextUrl))
-    }
-    console.log(req.auth)
-  } else {
-    if (authRoutes.includes(req.nextUrl.pathname)) {
+  } else if (ADMIN.some((route) => req.nextUrl.pathname.match(route))) {
+    if (req.auth && req.auth.user.role === 'ADMIN') {
       return
+    } else {
+      let callbackUrl = req.nextUrl.pathname
+      if (req.nextUrl.search) {
+        callbackUrl += req.nextUrl.search
+      }
+      const encodedCallbackUrl = encodeURIComponent(callbackUrl)
+      return Response.redirect(
+        new URL(
+          `/auth/login?admin=true&&callbackUrl=${encodedCallbackUrl}`,
+          req.nextUrl
+        )
+      )
     }
-    if (!publicRoutes.includes(req.nextUrl.pathname)) {
-      // private router matched
+  } else if (USER.some((route) => req.nextUrl.pathname.match(route))) {
+    if (req.auth) {
+      return
+    } else {
       let callbackUrl = req.nextUrl.pathname
       if (req.nextUrl.search) {
         callbackUrl += req.nextUrl.search
@@ -32,25 +35,13 @@ export default auth((req) => {
         new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, req.nextUrl)
       )
     }
+  } else if (AUTH.some((route) => req.nextUrl.pathname.match(route))) {
+    return
+  } else {
+    return
   }
 })
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico).*)']
 }
-
-const publicRoutes = [
-  '/',
-  '/404',
-  '/auth/verify-email',
-  '/auth/forgot-password',
-  '/artists',
-  '/arts',
-  '/contact',
-  '/about',
-  '/terms',
-  '/privacy-policy',
-  '/refund-policy'
-]
-
-const authRoutes = ['/auth/login', '/auth/register', '/auth/error']

@@ -38,3 +38,7 @@ To get a local copy up and running, follow these steps:
 2. Populate `.env` with required environment variables
 3. Install all the packages with `yarn`
 4. Run project with `yarn dev`
+
+# Documentation:
+
+Prisma deploy migration: `npx prisma migrate deploy`

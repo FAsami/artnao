@@ -1,59 +1,34 @@
 import type { Metadata } from 'next'
+import { ReCaptchaProvider } from '@/providers/RecaptchaProvider'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
-import '../globals.css'
-import 'animate.css'
 import { ConfigProvider } from 'antd'
-import { theme } from '../theme/antd'
-import { SessionProvider } from 'next-auth/react'
-import { auth } from '../auth'
-import { Header, Footer } from './components'
-import { primary, secondary } from './fonts'
+import { theme } from '@/theme/antd'
+import 'animate.css'
+import '../styles/globals.css'
+import clsx from 'clsx'
+import { font } from '@/assets/font'
 
 export const metadata: Metadata = {
   title: 'Artnao',
-  description: 'Artnao project setup'
+  description: 'A platform which combines who love arts'
 }
 
-const RootLayout = async ({
+export default function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
-}>) => {
-  const session = await auth()
+}>) {
   return (
-    <SessionProvider session={session}>
-      <html lang="en">
-        <body
-          className={`${primary.variable} ${secondary.variable} ${primary.className}`}
-        >
-          <AntdRegistry>
-            <ConfigProvider theme={theme}>
-              <div className="bg-slate-50">
-                <div>
-                  <Header />
-                  <div
-                    style={{
-                      height: 'calc(100vh - 80px)'
-                    }}
-                    className="overflow-y-auto"
-                  >
-                    <main
-                      className="max-w-screen-xl px-3 mx-auto font-primary"
-                      style={{
-                        minHeight: 'calc(100vh - 80px)'
-                      }}
-                    >
-                      {children}
-                    </main>
-                    <Footer />
-                  </div>
-                </div>
-              </div>
-            </ConfigProvider>
-          </AntdRegistry>
-        </body>
-      </html>
-    </SessionProvider>
+    <ConfigProvider theme={theme}>
+      <ReCaptchaProvider>
+        <html lang="en">
+          <body
+            className={clsx(font.className, font.variable, 'overflow-hidden')}
+          >
+            <AntdRegistry> {children}</AntdRegistry>
+          </body>
+        </html>
+      </ReCaptchaProvider>
+    </ConfigProvider>
   )
 }
-export default RootLayout
