@@ -1,9 +1,9 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 
-export default function SuccessPage() {
+const SuccessContent = () => {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id') // Get the session_id from the URL
 
@@ -37,5 +37,13 @@ export default function SuccessPage() {
       <h1>Payment Successful!</h1>
       <p>Your session ID is: {sessionId}</p>
     </div>
+  )
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SuccessContent />
+    </Suspense>
   )
 }

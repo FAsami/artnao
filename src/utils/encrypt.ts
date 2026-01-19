@@ -9,11 +9,11 @@ if (!SECRET_KEY) {
   )
 }
 
-export const encrypt = (data: object): string => {
+export const encrypt = async (data: object): Promise<string> => {
   return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString()
 }
 
-export const decrypt = (encryptedData: string): object => {
+export const decrypt = async (encryptedData: string): Promise<object> => {
   const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY)
   const decryptedData = bytes.toString(CryptoJS.enc.Utf8)
   return JSON.parse(decryptedData)

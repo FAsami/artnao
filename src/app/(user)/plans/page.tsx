@@ -41,7 +41,7 @@ const plans = [
     tags: '',
     price: '',
     discount: '',
-    type: 'EVENT_BASED' || 'DURATION_BASED',
+    type: 'EVENT_BASED',
     events: events[0],
     duration: 1,
     numberOfDesigns: 2,

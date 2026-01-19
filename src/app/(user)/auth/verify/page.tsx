@@ -8,12 +8,13 @@ import { VerifyOTPForm } from './VerifyForm'
 const VerifyPage = async ({
   searchParams
 }: {
-  searchParams: { [key: string]: string | undefined }
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  if (!searchParams.token) {
+  const { token: rawToken } = await searchParams
+  if (!rawToken) {
     redirect('/auth/login')
   }
-  const token = decodeURIComponent(searchParams.token)
+  const token = decodeURIComponent(rawToken)
   const decoded = (await decrypt(token)) as { email: string; name: string }
 
   if (!decoded.email) {
